@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CH Vitres | Le spécialiste de vos vitres</title>
+  <meta name="description" content="Lavage de vitres résidentiel et commercial à Montréal, Rive-Nord et Rive-Sud. Service professionnel, satisfaction 100% garantie.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0A2540;
+      --primary-light: #1E3A8A;
+      --accent: #2563EB;
+      --accent-hover: #1D4ED8;
+      --gold: #F59E0B;
+      --text-dark: #0F172A;
+      --text-muted: #475569;
+      --bg-light: #F8FAFC;
+      --white: #FFFFFF;
+      --border: #E2E8F0;
+      --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text-dark);
+      background-color: var(--bg-light);
+      line-height: 1.6;
+    }
+
+    /* HEADER & NAV */
+    header {
+      background-color: var(--primary);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo span {
+      background-color: var(--accent);
+      color: var(--white);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #E2E8F0;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .phone-cta-nav {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 16px;
+      border-radius: 50px;
+      color: var(--white) !important;
+      font-weight: 600 !important;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, rgba(10, 37, 64, 0.92) 0%, rgba(30, 58, 138, 0.88) 100%), 
+                  url('https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=1600') center/cover no-repeat;
+      color: var(--white);
+      padding: 80px 24px 100px;
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background-color: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: #CBD5E1;
+      margin-bottom: 32px;
+      font-weight: 400;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--white);
+      color: var(--primary);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      background-color: #F1F5F9;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .rating-summary-hero {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
+      padding: 12px 24px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .rating-score-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .stars-hero {
+      color: var(--gold);
+      letter-spacing: 2px;
+    }
+
+    .rating-sub {
+      font-size: 13px;
+      color: #94A3B8;
+      margin-top: 2px;
+    }
+
+    /* REVIEWS SLIDER (NATIF JS - NO IFRAME - 0 BUG MOBILE) */
+    .reviews-section {
+      padding: 70px 24px;
+      background-color: var(--white);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+
+    .slider-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .slider-track {
+      display: flex;
+      gap: 24px;
+      transition: transform 0.4s ease-in-out;
+      padding: 10px 0;
+    }
+
+    .review-card {
+      background-color: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      min-width: 320px;
+      max-width: 380px;
+      flex: 1 0 calc(33.333% - 16px);
+      text-align: left;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .review-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .review-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .review-author {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-dark);
+    }
+
+    .review-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .review-stars {
+      color: var(--gold);
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .review-text {
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.5;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+
+    .review-footer {
+      border-top: 1px solid #E2E8F0;
+      padding-top: 12px;
+      font-size: 11px;
+      color: #94A3B8;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .slider-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .slider-btn {
+      background-color: var(--bg-light);
+      border: 1px solid var(--border);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .slider-btn:hover {
+      background-color: var(--accent);
+      color: var(--white);
+      border-color: var(--accent);
+    }
+
+    .google-reviews-btn {
+      margin-top: 24px;
+      display: inline-block;
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 15px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .google-reviews-btn:hover {
+      background-color: #EFF6FF;
+      border-color: var(--accent);
+    }
+
+    /* ADVANTAGES / WHY CHOOSE US */
+    .advantages-section {
+      padding: 80px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .advantages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .adv-card {
+      background-color: var(--white);
+      padding: 32px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: transform 0.25s ease;
+    }
+
+    .adv-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .adv-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: inline-block;
+      background-color: #EFF6FF;
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      border-radius: 12px;
+      color: var(--accent);
+    }
+
+    .adv-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-dark);
+    }
+
+    .adv-card p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    /* SERVICES SECTION */
+    .services-section {
+      background-color: var(--white);
+      padding: 80px 24px;
+    }
+
+    .services-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .service-card {
+      background-color: var(--bg-light);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .service-img {
+      height: 180px;
+      background-color: #CBD5E1;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .service-body {
+      padding: 24px;
+    }
+
+    .service-body h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .service-body p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* FORM SECTION (SOUMISSION GRATUITE) */
+    .quote-section {
+      padding: 80px 24px;
+      background: linear-gradient(135deg, #0A2540 0%, #1E293B 100%);
+      color: var(--white);
+      id: soumission;
+    }
+
+    .quote-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: var(--white);
+      color: var(--text-dark);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .quote-container h2 {
+      font-size: 28px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+    }
+
+    .quote-container p {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      font-size: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 15px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background-color: var(--bg-light);
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+      background-color: var(--white);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: var(--accent);
+      color: var(--white);
+      border: none;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--accent-hover);
+    }
+
+    /* SERVICE AREAS & CONTACT */
+    .info-section {
+      padding: 80px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    .info-box h3 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .areas-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .areas-list li {
+      background-color: var(--white);
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .areas-list li::before {
+      content: "📍";
+    }
+
+    .contact-details {
+      margin-top: 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .contact-item a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: var(--primary);
+      color: #94A3B8;
+      padding: 40px 24px;
+      text-align: center;
+      font-size: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    footer p {
+      margin-bottom: 12px;
+    }
+
+    footer a {
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    /* RESPONSIVE DESIGNS FOR MOBILE */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 34px;
+      }
+      .hero p {
+        font-size: 16px;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .info-section {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none; /* Simplifié pour mobile */
+      }
+      .review-card {
+        min-width: 280px;
+        flex: 1 0 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo"><span>CH</span> VITRES</a>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#pourquoi">Pourquoi Nous</a></li>
+        <li><a href="#avis">Avis Clients</a></li>
+        <li><a href="#soumission">Soumission</a></li>
+        <li><a href="tel:5148039925" class="phone-cta-nav">📞 (514) 803-9925</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Montréal • Rive-Nord • Rive-Sud</div>
+      <h1>Le spécialiste de vos vitres.</h1>
+      <p>Un service professionnel, rapide et consciencieux pour des fenêtres étincelantes toute la saison.</p>
+      
+      <div class="hero-buttons">
+        <a href="#soumission" class="btn btn-primary">Combien ça coûte ?</a>
+        <a href="tel:5148039925" class="btn btn-secondary">📞 Nous appeler</a>
+      </div>
+
+      <div class="rating-summary-hero">
+        <div class="rating-score-line">
+          <span>5.0</span>
+          <span class="stars-hero">★★★★★</span>
+        </div>
+        <div class="rating-sub">Basé sur plus de 65 avis vérifiés sur Google</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS SECTION (NATIF JS - SANS IFRAME - PAS DE DEFILEMENT LATERAL SUR MOBILE) -->
+  <section class="reviews-section" id="avis">
+    <h2 class="section-title">Ce que nos clients disent</h2>
+    <p class="section-subtitle">La satisfaction de nos clients est notre plus grande fierté.</p>
+
+    <div class="slider-container">
+      <div class="slider-track" id="sliderTrack">
+        
+        <!-- AVIS 1 -->
+        <div class="review-card">
+          <div>
+            <div class="review-header">
+              <div class="review-avatar" style="background-color: #AD1457;">K</div>
+              <div>
+                <div class="review-author">Karine Dessler</div>
+                <div class="review-meta">Client fidèle • 4 avis</div>
+              </div>
+            </div>
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">"Cela fait 4 fois que j'utilise l'équipe de CH Vitres pour faire laver mes fenêtres et je suis extrêmement satisfaite !! 5 étoiles !! Service impeccable !"</div>
+          </div>
+          <div class="review-footer">Avis Google Vérifié</div>
+        </div>
+
+        <!-- AVIS 2 -->
+        <div class="review-card">
+          <div>
+            <div class="review-header">
+              <div class="review-avatar" style="background-color: #00838F;">C</div>
+              <div>
+                <div class="review-author">Catherine Legare</div>
+                <div class="review-meta">Client résidentiel</div>
+              </div>
+            </div>
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">"Nous sommes très satisfaits du lavage de nos vitres. Travailler avec CH Vitres a été facile. Ce sont de jeunes entrepreneurs organisés, réactifs et vaillants."</div>
+          </div>
+          <div class="review-footer">Avis Google Vérifié</div>
+        </div>
+
+        <!-- AVIS 3 -->
+        <div class="review-card">
+          <div>
+            <div class="review-header">
+              <div class="review-avatar" style="background-color: #1565C0;">E</div>
+              <div>
+                <div class="review-author">Eric Labranche</div>
+                <div class="review-meta">Client commercial</div>
+              </div>
+            </div>
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">"Jeune équipe dynamique et professionnelle. Le travail est bien fait et le personnel très poli et courtois. Bravo !"</div>
+          </div>
+          <div class="review-footer">Avis Google Vérifié</div>
+        </div>
+
+        <!-- AVIS 4 -->
+        <div class="review-card">
+          <div>
+            <div class="review-header">
+              <div class="review-avatar" style="background-color: #C2185B;">J</div>
+              <div>
+                <div class="review-author">JP Bo</div>
+                <div class="review-meta">Shop Angus</div>
+              </div>
+            </div>
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">"Service hyper courtois, nous sommes très satisfaits ! Qualité et ponctualité. Une belle référence pour les Shop Angus et tout autre quartier."</div>
+          </div>
+          <div class="review-footer">Avis Google Vérifié</div>
+        </div>
+
+        <!-- AVIS 5 -->
+        <div class="review-card">
+          <div>
+            <div class="review-header">
+              <div class="review-avatar" style="background-color: #7B1FA2;">N</div>
+              <div>
+                <div class="review-author">Nathalie Deno</div>
+                <div class="review-meta">Client résidentiel</div>
+              </div>
+            </div>
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">"Bon travail, fait consciencieusement. Merci Henri !"</div>
+          </div>
+          <div class="review-footer">Avis Google Vérifié</div>
+        </div>
+
+      </div>
+
+      <a href="https://share.google/H0f3xhHbCMxQEHyUb" target="_blank" class="google-reviews-btn">Voir tous nos 69 avis sur Google →</a>
+    </div>
+  </section>
+
+  <!-- POURQUOI CHOISIR CH VITRES -->
+  <section class="advantages-section" id="pourquoi">
+    <h2 class="section-title" style="text-align: center;">Pourquoi choisir CH Vitres ?</h2>
+    <p class="section-subtitle" style="text-align: center;">Un service clé en main pensé pour votre tranquillité d'esprit.</p>
+
+    <div class="advantages-grid">
+      <div class="adv-card">
+        <div class="adv-icon">⚡</div>
+        <h3>Interventions Rapides</h3>
+        <p>Prise de rendez-vous simple et exécution rapide pour ne pas faire attendre vos projets.</p>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-icon">📅</div>
+        <h3>Horaires Flexibles (7/7)</h3>
+        <p>Nous savons que vous êtes occupé. Nous travaillons autour de votre horaire toute la semaine.</p>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-icon">🤝</div>
+        <h3>Aucun Engagement</h3>
+        <p>Aucun dépôt requis à l'avance. Vous payez seulement une fois le travail complété.</p>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-icon">✨</div>
+        <h3>Satisfaction 100 %</h3>
+        <p>Nous restons sur place jusqu'à ce que le résultat réponde parfaitement à vos standards.</p>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-icon">🛡️</div>
+        <h3>Garantie 72 h</h3>
+        <p>Des retouches à faire ? Contactez-nous et nous reviendrons gratuitement sans discuter.</p>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-icon">🧼</div>
+        <h3>4 Services pour 1 Prix</h3>
+        <p>Les vitres, les cadres, les bas de fenêtres et les moustiquaires sont tous lavés soigneusement.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services-section" id="services">
+    <div class="services-container">
+      <h2 class="section-title" style="text-align: center;">Nos Services</h2>
+      <p class="section-subtitle" style="text-align: center;">Des solutions complètes pour l'entretien extérieur de votre propriété.</p>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&q=80&w=800');"></div>
+          <div class="service-body">
+            <h3>Lavage de Vitres</h3>
+            <p>Nettoyage intérieur et extérieur résidentiel et commercial pour une clarté maximale.</p>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=800');"></div>
+          <div class="service-body">
+            <h3>Nettoyage de Gouttières</h3>
+            <p>Dégagement complet des débris pour prévenir les infiltrations d'eau et protéger votre toit.</p>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800');"></div>
+          <div class="service-body">
+            <h3>Blanchiment de Gouttières</h3>
+            <p>Restauration de l'apparence d'origine de vos gouttières extérieures pour rehausser votre façade.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULAIRE DE SOUMISSION GRATUITE (FORM NATIVE SANS BRANDING / SANS SPAM) -->
+  <section class="quote-section" id="soumission">
+    <div class="quote-container">
+      <h2>Obtenir une soumission gratuite</h2>
+      <p>Remplissez ce formulaire court et nous vous contacterons rapidement avec une estimation sans engagement.</p>
+
+      <!-- Web3Forms : Gratuit, envoie les demandes directement sur chvitres@gmail.com sans aucune marque -->
+      <form action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="VOTRE_CLE_WEB3FORMS_ICI">
+        <input type="hidden" name="subject" value="Nouvelle demande d'estimation - CH Vitres">
+        <input type="hidden" name="from_name" value="CH Vitres Web Site">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Nom complet *</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Ex: Jean Dupont" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Numéro de téléphone *</label>
+            <input type="tel" id="phone" name="phone" class="form-control" placeholder="Ex: (514) 123-4567" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Courriel</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Ex: exemple@gmail.com">
+          </div>
+          <div class="form-group">
+            <label for="service">Service désiré *</label>
+            <select id="service" name="service" class="form-control" required>
+              <option value="Lavage de vitres">Lavage de vitres</option>
+              <option value="Nettoyage de gouttières">Nettoyage de gouttières</option>
+              <option value="Blanchiment de gouttières">Blanchiment de gouttières</option>
+              <option value="Combinaison de services">Combinaison de services</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Ville / Adresse approxiative *</label>
+          <input type="text" id="address" name="address" class="form-control" placeholder="Ex: Rosemont, Montréal" required>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Détails de la demande (optionnel)</label>
+          <textarea id="message" name="message" class="form-control" rows="3" placeholder="Ex: Maison à 2 étages, environ 15 fenêtres..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Envoyer ma demande d'estimation</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- INFOS CONTACT ET ZONES -->
+  <section class="info-section">
+    <div class="info-box">
+      <h3>Zones desservies</h3>
+      <ul class="areas-list">
+        <li>Ahuntsic-Cartierville</li>
+        <li>Rosemont–La Petite-Patrie</li>
+        <li>Montréal (Tous secteurs)</li>
+        <li>Rive-Nord (Laval, etc.)</li>
+        <li>Rive-Sud</li>
+      </ul>
+    </div>
+
+    <div class="info-box">
+      <h3>Pour nous joindre</h3>
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Des questions ? N'hésitez pas à nous appeler directement ou à nous envoyer un message.</p>
+      <div class="contact-details">
+        <div class="contact-item">
+          📞 <a href="tel:5148039925">(514) 803-9925</a>
+        </div>
+        <div class="contact-item">
+          ✉️ <a href="mailto:chvitres@gmail.com">chvitres@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 CH Vitres. Tous droits réservés. | Le spécialiste de vos vitres.</p>
+    <p><a href="tel:5148039925">(514) 803-9925</a> • Montréal, Rive-Nord et Rive-Sud</p>
+  </footer>
+
+</body>
+</html>
