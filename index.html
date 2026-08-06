@@ -221,7 +221,7 @@
       margin-top: 2px;
     }
 
-    /* REVIEWS SLIDER (NATIF JS - NO IFRAME - 0 BUG MOBILE) */
+    /* REVIEWS SLIDER */
     .reviews-section {
       padding: 70px 24px;
       background-color: var(--white);
@@ -251,8 +251,17 @@
     .slider-track {
       display: flex;
       gap: 24px;
-      transition: transform 0.4s ease-in-out;
+      overflow-x: auto;
       padding: 10px 0;
+      scroll-snap-type: x mandatory;
+    }
+
+    .slider-track::-webkit-scrollbar {
+      height: 6px;
+    }
+    .slider-track::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 10px;
     }
 
     .review-card {
@@ -260,7 +269,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 28px;
-      min-width: 320px;
+      min-width: 300px;
       max-width: 380px;
       flex: 1 0 calc(33.333% - 16px);
       text-align: left;
@@ -268,6 +277,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      scroll-snap-align: start;
     }
 
     .review-header {
@@ -325,34 +335,6 @@
       letter-spacing: 0.5px;
     }
 
-    .slider-controls {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 16px;
-      margin-top: 32px;
-    }
-
-    .slider-btn {
-      background-color: var(--bg-light);
-      border: 1px solid var(--border);
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .slider-btn:hover {
-      background-color: var(--accent);
-      color: var(--white);
-      border-color: var(--accent);
-    }
-
     .google-reviews-btn {
       margin-top: 24px;
       display: inline-block;
@@ -371,7 +353,7 @@
       border-color: var(--accent);
     }
 
-    /* ADVANTAGES / WHY CHOOSE US */
+    /* ADVANTAGES */
     .advantages-section {
       padding: 80px 24px;
       max-width: 1200px;
@@ -471,12 +453,11 @@
       font-size: 14px;
     }
 
-    /* FORM SECTION (SOUMISSION GRATUITE) */
+    /* FORM SECTION */
     .quote-section {
       padding: 80px 24px;
       background: linear-gradient(135deg, #0A2540 0%, #1E293B 100%);
       color: var(--white);
-      id: soumission;
     }
 
     .quote-container {
@@ -557,7 +538,7 @@
       background-color: var(--accent-hover);
     }
 
-    /* SERVICE AREAS & CONTACT */
+    /* INFOS & CONTACT */
     .info-section {
       padding: 80px 24px;
       max-width: 1200px;
@@ -633,7 +614,6 @@
       text-decoration: none;
     }
 
-    /* RESPONSIVE DESIGNS FOR MOBILE */
     @media (max-width: 768px) {
       .hero h1 {
         font-size: 34px;
@@ -648,11 +628,11 @@
         grid-template-columns: 1fr;
       }
       .nav-links {
-        display: none; /* Simplifié pour mobile */
+        display: none;
       }
       .review-card {
         min-width: 280px;
-        flex: 1 0 100%;
+        flex: 1 0 85%;
       }
     }
   </style>
@@ -695,7 +675,7 @@
     </div>
   </section>
 
-  <!-- REVIEWS SECTION (NATIF JS - SANS IFRAME - PAS DE DEFILEMENT LATERAL SUR MOBILE) -->
+  <!-- REVIEWS SECTION -->
   <section class="reviews-section" id="avis">
     <h2 class="section-title">Ce que nos clients disent</h2>
     <p class="section-subtitle">La satisfaction de nos clients est notre plus grande fierté.</p>
@@ -867,15 +847,15 @@
     </div>
   </section>
 
-  <!-- FORMULAIRE DE SOUMISSION GRATUITE (FORM NATIVE SANS BRANDING / SANS SPAM) -->
+  <!-- FORMULAIRE DE SOUMISSION GRATUITE AVEC LA CLE WE3FORMS INTEGREE -->
   <section class="quote-section" id="soumission">
     <div class="quote-container">
       <h2>Obtenir une soumission gratuite</h2>
       <p>Remplissez ce formulaire court et nous vous contacterons rapidement avec une estimation sans engagement.</p>
 
-      <!-- Web3Forms : Gratuit, envoie les demandes directement sur chvitres@gmail.com sans aucune marque -->
       <form action="https://api.web3forms.com/submit" method="POST">
-        <input type="hidden" name="access_key" value="VOTRE_CLE_WEB3FORMS_ICI">
+        <!-- CLE INTÉGRÉE AUTOMATIQUEMENT ICI -->
+        <input type="hidden" name="access_key" value="23b01e85-1c9b-48d3-9b8b-6e9af040d1bc">
         <input type="hidden" name="subject" value="Nouvelle demande d'estimation - CH Vitres">
         <input type="hidden" name="from_name" value="CH Vitres Web Site">
 
@@ -907,7 +887,7 @@
         </div>
 
         <div class="form-group">
-          <label for="address">Ville / Adresse approxiative *</label>
+          <label for="address">Ville / Adresse approximative *</label>
           <input type="text" id="address" name="address" class="form-control" placeholder="Ex: Rosemont, Montréal" required>
         </div>
 
