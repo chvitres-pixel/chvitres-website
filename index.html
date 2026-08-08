@@ -347,7 +347,7 @@
     }
 
     .hero h1 {
-      font-size: 56px;
+      font-size: 48px;
       font-weight: 800;
       line-height: 1.1;
       margin-bottom: 20px;
@@ -357,7 +357,7 @@
     }
 
     .hero p {
-      font-size: 22px;
+      font-size: 20px;
       color: #E2E8F0;
       margin-bottom: 40px;
       font-weight: 400;
@@ -641,10 +641,9 @@
       position: relative; width: 100%; height: 420px; overflow: hidden; border-radius: 16px;
       box-shadow: 0 15px 30px rgba(0,0,0,0.15); user-select: none;
     }
-    .ba-image-after, .ba-image-before-inner { background-size: cover; background-position: center; }
-    .ba-image-after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    .ba-image-after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center;}
     .ba-image-before { position: absolute; top: 0; left: 0; width: 50%; height: 100%; border-right: 4px solid var(--white); box-shadow: 5px 0 15px rgba(0,0,0,0.4); overflow: hidden; }
-    .ba-image-before-inner { position: absolute; top: 0; left: 0; width: 600px; height: 100%; }
+    .ba-image-before-inner { position: absolute; top: 0; left: 0; width: 1000px; /* Will be overwritten by JS */ height: 100%; background-size: cover; background-position: center;}
     
     .ba-label {
       position: absolute; bottom: 16px; padding: 8px 16px; background: rgba(15, 23, 42, 0.8);
@@ -659,11 +658,27 @@
       justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.4); pointer-events: none; z-index: 5; font-weight: 800; font-size: 20px;
     }
 
+    /* LISTE DES DETAILS DES SERVICES */
     .service-features-list { list-style: none; margin: 30px 0 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
     .service-features-list li {
       font-size: 16px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 14px;
       padding: 16px 20px;
+      /* On retire les styles glass-card conflictuels ici pour éviter les bogues de survol */
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--glass-shadow);
+      transition: transform 0.4s var(--ease-liquid), box-shadow 0.4s ease;
     }
+    
+    .service-features-list li:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: var(--shadow-hover);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
     .service-features-list li::before {
       content: "✓"; color: var(--white); font-weight: 800; background: linear-gradient(135deg, var(--accent) 0%, var(--primary-light) 100%);
       width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
@@ -726,7 +741,6 @@
     footer a { color: var(--white); text-decoration: none; font-weight: 700; transition: color 0.3s ease; }
     footer a:hover { color: var(--accent); }
 
-    /* MEDIA QUERIES (MOBILE) */
     @media (max-width: 900px) { .commercial-split-layout { grid-template-columns: 1fr; } }
     @media (max-width: 768px) {
       .menu-toggle { display: block; }
@@ -1088,14 +1102,14 @@
 
       <h3 class="reveal" style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Ce que comprend le service de lavage :</h3>
       <ul class="service-features-list reveal">
-        <li class="glass-card">Lavage intérieur et extérieur complet des surfaces vitrées</li>
-        <li class="glass-card delay-1">Lavage professionnel des cadrages et des moustiquaires</li>
+        <li>Lavage intérieur et extérieur complet des surfaces vitrées</li>
+        <li>Lavage professionnel des cadrages et des moustiquaires</li>
       </ul>
       
       <h3 class="reveal" style="font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 20px; margin-top: 30px;">Services complémentaires disponibles :</h3>
       <ul class="service-features-list reveal">
-        <li class="glass-card delay-2">Dépoussiérage et dégraissage méticuleux des rails</li>
-        <li class="glass-card delay-3">Nettoyage des mécanismes d'ouverture</li>
+        <li>Dépoussiérage et dégraissage méticuleux des rails de fenêtre</li>
+        <li>Nettoyage des mécanismes d'ouverture</li>
       </ul>
 
       <div class="extra-info-block glass-card reveal">
@@ -1158,10 +1172,14 @@
 
       <h3 class="reveal" style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Ce que comprend le service de base :</h3>
       <ul class="service-features-list reveal">
-        <li class="glass-card">Frottage manuel minutieux des parois extérieures</li>
-        <li class="glass-card delay-1">Élimination complète des marques et saletés</li>
-        <li class="glass-card delay-2">Restauration esthétique immédiate de votre façade</li>
-        <li class="glass-card delay-3">Nettoyage des soffites (élimination des toiles d'araignées)</li>
+        <li>Frottage manuel minutieux des parois extérieures de gouttières</li>
+        <li>Élimination complète des marques, suie et saletés encrassées</li>
+        <li>Restauration esthétique immédiate de votre façade</li>
+      </ul>
+
+      <h3 class="reveal" style="font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 20px; margin-top: 30px;">Service complémentaire :</h3>
+      <ul class="service-features-list reveal">
+        <li>Nettoyage des soffites (élimination des toiles d'araignées et de toutes les traces)</li>
       </ul>
 
       <div class="extra-info-block glass-card reveal">
@@ -1219,8 +1237,8 @@
 
       <h3 class="reveal" style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Ce que comprend le service :</h3>
       <ul class="service-features-list reveal">
-        <li class="glass-card delay-1">Remplacement par une toile en fibre de verre haute durabilité</li>
-        <li class="glass-card delay-2">Installation d'un nouveau cordon de retenue (cannelure)</li>
+        <li>Remplacement par une toile en fibre de verre haute durabilité</li>
+        <li>Installation d'un nouveau cordon de retenue (cannelure)</li>
       </ul>
 
       <div class="extra-info-block glass-card reveal">
@@ -1499,6 +1517,7 @@
         
         // Relancer l'observer pour la nouvelle page affichée
         setTimeout(() => {
+          syncSliderWidths();
           document.querySelectorAll('.reveal').forEach(el => {
              if(isElementInViewport(el)){
                el.classList.add('active');
@@ -1543,7 +1562,7 @@
       if (!track) return;
       const card = track.querySelector('.review-card');
       if (!card) return;
-      const cardWidth = card.offsetWidth + 30;
+      const cardWidth = card.offsetWidth + 30; // updated gap
       const totalCards = track.querySelectorAll('.review-card').length;
       
       let visibleCards = 3;
@@ -1556,7 +1575,7 @@
       track.style.transform = `translateX(-${index * cardWidth}px)`;
     }
 
-    setInterval(moveCarousel, 4000);
+    setInterval(moveCarousel, 4000); // Slower for premium feel
 
     // SLIDERS AVANT/APRÈS
     function updateSlider(id, val) {
@@ -1565,6 +1584,19 @@
       if (beforeImg) beforeImg.style.width = val + '%';
       if (handle) handle.style.left = val + '%';
     }
+
+    function syncSliderWidths() {
+      const containers = document.querySelectorAll('.ba-slider-container');
+      containers.forEach(container => {
+        const w = container.offsetWidth;
+        if (w > 0) {
+          const inner = container.querySelector('.ba-image-before-inner');
+          if (inner) inner.style.width = w + 'px';
+        }
+      });
+    }
+
+    window.addEventListener('resize', syncSliderWidths);
 
     // LOGIQUE MODAL GALERIE
     function openModal(imgSrc) {
@@ -1590,6 +1622,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Synchroniser la largeur des sliders au chargement initial
+      setTimeout(syncSliderWidths, 100);
+
       // 1. Initialiser le Modal pour la galerie
       const galleryImages = document.querySelectorAll('#page-galerie .gallery-item img');
       galleryImages.forEach(img => {
