@@ -347,7 +347,7 @@
     }
 
     .hero h1 {
-      font-size: 48px;
+      font-size: 56px;
       font-weight: 800;
       line-height: 1.1;
       margin-bottom: 20px;
@@ -357,7 +357,7 @@
     }
 
     .hero p {
-      font-size: 20px;
+      font-size: 22px;
       color: #E2E8F0;
       margin-bottom: 40px;
       font-weight: 400;
@@ -572,7 +572,7 @@
     .adv-card h3 { font-size: 22px; font-weight: 800; margin-bottom: 16px; color: var(--primary); }
     .adv-card p { color: var(--text-muted); font-size: 16px; line-height: 1.6; }
 
-    /* FORM SECTION (SUPER GLASS) */
+    /* FORM SECTION */
     .quote-section {
       padding: 120px 24px;
       background: linear-gradient(135deg, rgba(10, 37, 64, 0.8) 0%, rgba(30, 58, 138, 0.7) 100%), 
@@ -641,9 +641,10 @@
       position: relative; width: 100%; height: 420px; overflow: hidden; border-radius: 16px;
       box-shadow: 0 15px 30px rgba(0,0,0,0.15); user-select: none;
     }
-    .ba-image-after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center;}
+    .ba-image-after, .ba-image-before-inner { background-size: cover; background-position: center; }
+    .ba-image-after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
     .ba-image-before { position: absolute; top: 0; left: 0; width: 50%; height: 100%; border-right: 4px solid var(--white); box-shadow: 5px 0 15px rgba(0,0,0,0.4); overflow: hidden; }
-    .ba-image-before-inner { position: absolute; top: 0; left: 0; width: 1000px; /* Will be overwritten by JS */ height: 100%; background-size: cover; background-position: center;}
+    .ba-image-before-inner { position: absolute; top: 0; left: 0; width: 600px; height: 100%; }
     
     .ba-label {
       position: absolute; bottom: 16px; padding: 8px 16px; background: rgba(15, 23, 42, 0.8);
@@ -663,7 +664,6 @@
     .service-features-list li {
       font-size: 16px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 14px;
       padding: 16px 20px;
-      /* On retire les styles glass-card conflictuels ici pour éviter les bogues de survol */
       background: var(--glass-bg);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
@@ -1057,7 +1057,7 @@
 
   <!-- ================= PAGE DÉDIÉE : LAVAGE DE VITRES ================= -->
   <div id="page-lavage-vitres" class="page">
-    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.75), rgba(10,37,64,0.75)), url('https://drive.google.com/thumbnail?id=1dT2_F7ok4L2AqLNDDTrjozMWFWAt0sif&sz=w1200') center/cover no-repeat;">
+    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.75), rgba(10,37,64,0.75)), url('https://lh3.googleusercontent.com/d/1dT2_F7ok4L2AqLNDDTrjozMWFWAt0sif') center/cover no-repeat;">
       <h1>Lavage de Vitres Professionnel</h1>
       <p>Un lavage méticuleux de vos vitres, cadrages, rails et mécanismes pour une luminosité optimale.</p>
       <button onclick="scrollToForm()" class="btn btn-primary">Obtenir une soumission gratuite</button>
@@ -1103,13 +1103,13 @@
       <h3 class="reveal" style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Ce que comprend le service de lavage :</h3>
       <ul class="service-features-list reveal">
         <li>Lavage intérieur et extérieur complet des surfaces vitrées</li>
-        <li>Lavage professionnel des cadrages et des moustiquaires</li>
+        <li class="delay-1">Lavage professionnel des cadrages et des moustiquaires</li>
       </ul>
       
       <h3 class="reveal" style="font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 20px; margin-top: 30px;">Services complémentaires disponibles :</h3>
       <ul class="service-features-list reveal">
-        <li>Dépoussiérage et dégraissage méticuleux des rails de fenêtre</li>
-        <li>Nettoyage des mécanismes d'ouverture</li>
+        <li class="delay-2">Dépoussiérage et dégraissage méticuleux des rails</li>
+        <li class="delay-3">Nettoyage des mécanismes d'ouverture</li>
       </ul>
 
       <div class="extra-info-block glass-card reveal">
@@ -1127,7 +1127,7 @@
 
   <!-- ================= PAGE DÉDIÉE : BLANCHIMENT DE GOUTTIÈRES ================= -->
   <div id="page-blanchiment-gouttieres" class="page">
-    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.75), rgba(10,37,64,0.75)), url('https://drive.google.com/thumbnail?id=191edJyMTYkw25SPD_Arfl6Z4wL0LGBOJ&sz=w1200') center/cover no-repeat;">
+    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.75), rgba(10,37,64,0.75)), url('https://lh3.googleusercontent.com/d/191edJyMTYkw25SPD_Arfl6Z4wL0LGBOJ') center/cover no-repeat;">
       <h1>Blanchiment de Gouttières</h1>
       <p>Restaurez l'éclat d'origine de vos gouttières en aluminium et éliminez les lignes noires d'oxydation.</p>
       <button onclick="scrollToForm()" class="btn btn-primary">Obtenir une soumission gratuite</button>
@@ -1158,9 +1158,9 @@
         <div class="ba-card glass-card reveal delay-2">
           <h3>Exemple 2 : Blanchiment et nettoyage complet</h3>
           <div class="ba-slider-container">
-            <div class="ba-image-after" style="background-image: url('https://drive.google.com/thumbnail?id=1lAy1HcfjeQiEb9CTraw1zDmtuV1b4EAH&sz=w1200');"></div>
+            <div class="ba-image-after" style="background-image: url('https://lh3.googleusercontent.com/d/1lAy1HcfjeQiEb9CTraw1zDmtuV1b4EAH');"></div>
             <div class="ba-image-before" id="ba-before-goutt-3" style="width: 50%;">
-              <div class="ba-image-before-inner" style="background-image: url('https://drive.google.com/thumbnail?id=12GnNHn5gKLCsB2Mkaub5PBTvAznSehBT&sz=w1200');"></div>
+              <div class="ba-image-before-inner" style="background-image: url('https://lh3.googleusercontent.com/d/12GnNHn5gKLCsB2Mkaub5PBTvAznSehBT');"></div>
             </div>
             <span class="ba-label ba-label-before">Avant</span>
             <span class="ba-label ba-label-after">Après</span>
@@ -1172,14 +1172,14 @@
 
       <h3 class="reveal" style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Ce que comprend le service de base :</h3>
       <ul class="service-features-list reveal">
-        <li>Frottage manuel minutieux des parois extérieures de gouttières</li>
-        <li>Élimination complète des marques, suie et saletés encrassées</li>
-        <li>Restauration esthétique immédiate de votre façade</li>
+        <li>Frottage manuel minutieux des parois extérieures</li>
+        <li class="delay-1">Élimination complète des marques et saletés</li>
+        <li class="delay-2">Restauration esthétique immédiate de votre façade</li>
       </ul>
 
       <h3 class="reveal" style="font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 20px; margin-top: 30px;">Service complémentaire :</h3>
       <ul class="service-features-list reveal">
-        <li>Nettoyage des soffites (élimination des toiles d'araignées et de toutes les traces)</li>
+        <li class="delay-3">Nettoyage des soffites (élimination des toiles d'araignées)</li>
       </ul>
 
       <div class="extra-info-block glass-card reveal">
@@ -1192,7 +1192,7 @@
 
   <!-- ================= PAGE DÉDIÉE : RÉPARATION DE MOUSTIQUAIRES ================= -->
   <div id="page-reparation-moustiquaires" class="page">
-    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.75), rgba(10,37,64,0.75)), url('https://drive.google.com/thumbnail?id=1zq08EH40-mSGxcd0MW4PX3Mu812TLQXa&sz=w1200') center/cover no-repeat;">
+    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.75), rgba(10,37,64,0.75)), url('https://lh3.googleusercontent.com/d/1zq08EH40-mSGxcd0MW4PX3Mu812TLQXa') center/cover no-repeat;">
       <h1>Réparation de Moustiquaires</h1>
       <p>Remise en état complète et remplacement de vos toiles abîmées ou trouées.</p>
       <button onclick="scrollToForm()" class="btn btn-primary">Obtenir une soumission gratuite</button>
@@ -1208,9 +1208,9 @@
         <div class="ba-card glass-card reveal delay-1">
           <h3>Exemple 1 : Remplacement de toile</h3>
           <div class="ba-slider-container">
-            <div class="ba-image-after" style="background-image: url('https://drive.google.com/thumbnail?id=1R1eWTQnnJQG9ZfKJAz8r2cetwFx4E1Ys&sz=w1200');"></div>
+            <div class="ba-image-after" style="background-image: url('https://lh3.googleusercontent.com/d/1R1eWTQnnJQG9ZfKJAz8r2cetwFx4E1Ys');"></div>
             <div class="ba-image-before" id="ba-before-moust-1" style="width: 50%;">
-              <div class="ba-image-before-inner" style="background-image: url('https://drive.google.com/thumbnail?id=1LR4lQcKRvCmfja2mQJ8QXz8-IgWymsP2&sz=w1200');"></div>
+              <div class="ba-image-before-inner" style="background-image: url('https://lh3.googleusercontent.com/d/1LR4lQcKRvCmfja2mQJ8QXz8-IgWymsP2');"></div>
             </div>
             <span class="ba-label ba-label-before">Avant</span>
             <span class="ba-label ba-label-after">Après</span>
@@ -1223,9 +1223,9 @@
         <div class="ba-card glass-card reveal delay-2">
           <h3>Exemple 2 : Remplacement de toile</h3>
           <div class="ba-slider-container">
-            <div class="ba-image-after" style="background-image: url('https://drive.google.com/thumbnail?id=1k0NfYeQfV3SdHwf7dceFfHAgFayXS7BJ&sz=w1200');"></div>
+            <div class="ba-image-after" style="background-image: url('https://lh3.googleusercontent.com/d/1k0NfYeQfV3SdHwf7dceFfHAgFayXS7BJ');"></div>
             <div class="ba-image-before" id="ba-before-moust-2" style="width: 50%;">
-              <div class="ba-image-before-inner" style="background-image: url('https://drive.google.com/thumbnail?id=1Kso-it3owA9LCJoVUySp3It--hMckpen&sz=w1200');"></div>
+              <div class="ba-image-before-inner" style="background-image: url('https://lh3.googleusercontent.com/d/1Kso-it3owA9LCJoVUySp3It--hMckpen');"></div>
             </div>
             <span class="ba-label ba-label-before">Avant</span>
             <span class="ba-label ba-label-after">Après</span>
@@ -1237,8 +1237,8 @@
 
       <h3 class="reveal" style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Ce que comprend le service :</h3>
       <ul class="service-features-list reveal">
-        <li>Remplacement par une toile en fibre de verre haute durabilité</li>
-        <li>Installation d'un nouveau cordon de retenue (cannelure)</li>
+        <li class="delay-1">Remplacement par une toile en fibre de verre haute durabilité</li>
+        <li class="delay-2">Installation d'un nouveau cordon de retenue (cannelure)</li>
       </ul>
 
       <div class="extra-info-block glass-card reveal">
@@ -1251,7 +1251,7 @@
 
   <!-- ================= PAGE DÉDIÉE : COMMERCIAL ================= -->
   <div id="page-commercial" class="page">
-    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.85), rgba(10,37,64,0.85)), url('https://drive.google.com/thumbnail?id=1Y5SFaJjJymriQUnQgvRd6zang8hlqObW&sz=w1200') center/cover no-repeat;">
+    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.85), rgba(10,37,64,0.85)), url('https://lh3.googleusercontent.com/d/1Y5SFaJjJymriQUnQgvRd6zang8hlqObW') center/cover no-repeat;">
       <h1>Lavage de Vitres Commercial & Multi-Logements</h1>
       <p>Des solutions professionnelles pour une image de marque étincelante à Montréal.</p>
       <button onclick="scrollToForm()" class="btn btn-primary">Demander un devis commercial</button>
@@ -1297,7 +1297,7 @@
         <!-- Eau Pure -->
         <div class="commercial-side-card glass-card delay-1">
           <div style="overflow: hidden;">
-            <img src="https://drive.google.com/thumbnail?id=1MjY3U5wgqTjKTt0uAmoPeCyGz0WktybA&sz=w1200" alt="Système eau pure haute performance" style="transition: transform 0.8s var(--ease-liquid);">
+            <img src="https://lh3.googleusercontent.com/d/1MjY3U5wgqTjKTt0uAmoPeCyGz0WktybA" alt="Système eau pure haute performance" style="transition: transform 0.8s var(--ease-liquid);">
           </div>
           <div style="padding: 32px; flex-grow: 1;">
             <h4 style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 16px;">Lavage Extérieur Haute Performance</h4>
@@ -1314,7 +1314,7 @@
         <!-- Fréquence -->
         <div class="commercial-side-card glass-card delay-2">
           <div style="overflow: hidden;">
-            <img src="https://drive.google.com/thumbnail?id=1K_aXtO3Si6bV0SChSQM_0i_1gt2_dh6n&sz=w1200" alt="Recommandation d'entretien" style="transition: transform 0.8s var(--ease-liquid);">
+            <img src="https://lh3.googleusercontent.com/d/1K_aXtO3Si6bV0SChSQM_0i_1gt2_dh6n" alt="Recommandation d'entretien" style="transition: transform 0.8s var(--ease-liquid);">
           </div>
           <div style="padding: 32px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
             <h4 style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Recommandation d'entretien</h4>
@@ -1331,11 +1331,11 @@
       
       <div class="photo-gallery-grid reveal">
           <div class="gallery-item glass-card delay-1">
-            <img src="https://drive.google.com/thumbnail?id=1TK0i2FEH5Nfy9afozU_3vWM16WOkxD7m&sz=w1200" alt="Condos et Multi-logements">
+            <img src="https://lh3.googleusercontent.com/d/1TK0i2FEH5Nfy9afozU_3vWM16WOkxD7m" alt="Condos et Multi-logements">
             <div class="gallery-caption">Condos & Multi-logements</div>
           </div>
           <div class="gallery-item glass-card delay-2">
-            <img src="https://drive.google.com/thumbnail?id=1ZS9jZqHLZbi2pke709vDBSQit-ZMdd9q&sz=w1200" alt="Imprimerie">
+            <img src="https://lh3.googleusercontent.com/d/1ZS9jZqHLZbi2pke709vDBSQit-ZMdd9q" alt="Imprimerie">
             <div class="gallery-caption">Imprimerie</div>
           </div>
           <div class="gallery-item glass-card delay-3">
@@ -1360,42 +1360,42 @@
       <div class="photo-gallery-grid reveal" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
         
         <div class="gallery-item glass-card delay-1">
-          <img src="https://drive.google.com/thumbnail?id=1deEt7t0hU3dn_bFBrX9maPzphzXoijQy&sz=w1200" alt="Réalisation CH Vitres 1">
+          <img src="https://lh3.googleusercontent.com/d/1deEt7t0hU3dn_bFBrX9maPzphzXoijQy" alt="Réalisation CH Vitres 1">
           <div class="gallery-caption">Résultat professionnel et sans trace</div>
         </div>
         
         <div class="gallery-item glass-card delay-2">
-          <img src="https://drive.google.com/thumbnail?id=13_bYD9NdD52XmMFalit5aFpfP94B2igM&sz=w1200" alt="Réalisation CH Vitres 2">
+          <img src="https://lh3.googleusercontent.com/d/13_bYD9NdD52XmMFalit5aFpfP94B2igM" alt="Réalisation CH Vitres 2">
           <div class="gallery-caption">Entretien méticuleux de vos fenêtres</div>
         </div>
         
         <div class="gallery-item glass-card delay-3">
-          <img src="https://drive.google.com/thumbnail?id=1dWwoq1vqPqjLDkGGCmFwmWHLAP0i9mCK&sz=w1200" alt="Réalisation CH Vitres 3">
+          <img src="https://lh3.googleusercontent.com/d/1dWwoq1vqPqjLDkGGCmFwmWHLAP0i9mCK" alt="Réalisation CH Vitres 3">
           <div class="gallery-caption">Clarté maximale pour votre propriété</div>
         </div>
         
         <div class="gallery-item glass-card delay-1">
-          <img src="https://drive.google.com/thumbnail?id=1L8Q1QA2ODu8fRt8KUhzLgH6jYsFigZQ-&sz=w1200" alt="Réalisation CH Vitres 4">
+          <img src="https://lh3.googleusercontent.com/d/1L8Q1QA2ODu8fRt8KUhzLgH6jYsFigZQ-" alt="Réalisation CH Vitres 4">
           <div class="gallery-caption">Lavage professionnel des surfaces vitrées</div>
         </div>
         
         <div class="gallery-item glass-card delay-2">
-          <img src="https://drive.google.com/thumbnail?id=1iTy4AqrwDza0QGsSxFB62Mbl5lEu7mwc&sz=w1200" alt="Réalisation CH Vitres 5">
+          <img src="https://lh3.googleusercontent.com/d/1iTy4AqrwDza0QGsSxFB62Mbl5lEu7mwc" alt="Réalisation CH Vitres 5">
           <div class="gallery-caption">Une luminosité optimale garantie</div>
         </div>
         
         <div class="gallery-item glass-card delay-3">
-          <img src="https://drive.google.com/thumbnail?id=1W9wVuqKZa_VNXV9q4mAi6tFr2zNPHWl4&sz=w1200" alt="Réalisation CH Vitres 6">
+          <img src="https://lh3.googleusercontent.com/d/1W9wVuqKZa_VNXV9q4mAi6tFr2zNPHWl4" alt="Réalisation CH Vitres 6">
           <div class="gallery-caption">Intervention de qualité sur le terrain</div>
         </div>
         
         <div class="gallery-item glass-card delay-1">
-          <img src="https://drive.google.com/thumbnail?id=1QjfNKd6N1DA9-zGzmJyRQtd_MtBuDO3L&sz=w1200" alt="Réalisation CH Vitres 7">
+          <img src="https://lh3.googleusercontent.com/d/1QjfNKd6N1DA9-zGzmJyRQtd_MtBuDO3L" alt="Réalisation CH Vitres 7">
           <div class="gallery-caption">Nettoyage impeccable des cadrages</div>
         </div>
         
         <div class="gallery-item glass-card delay-2">
-          <img src="https://drive.google.com/thumbnail?id=1DS-reg-dswC8BmgxaTTKzFZBpPZFLBAQ&sz=w1200" alt="Réalisation CH Vitres 8">
+          <img src="https://lh3.googleusercontent.com/d/1DS-reg-dswC8BmgxaTTKzFZBpPZFLBAQ" alt="Réalisation CH Vitres 8">
           <div class="gallery-caption">Transparence et propreté irréprochables</div>
         </div>
 
@@ -1562,7 +1562,7 @@
       if (!track) return;
       const card = track.querySelector('.review-card');
       if (!card) return;
-      const cardWidth = card.offsetWidth + 30; // updated gap
+      const cardWidth = card.offsetWidth + 30;
       const totalCards = track.querySelectorAll('.review-card').length;
       
       let visibleCards = 3;
@@ -1575,7 +1575,7 @@
       track.style.transform = `translateX(-${index * cardWidth}px)`;
     }
 
-    setInterval(moveCarousel, 4000); // Slower for premium feel
+    setInterval(moveCarousel, 4000);
 
     // SLIDERS AVANT/APRÈS
     function updateSlider(id, val) {
