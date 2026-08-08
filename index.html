@@ -19,9 +19,13 @@
       --text-muted: #475569;
       --bg-light: #F8FAFC;
       --white: #FFFFFF;
-      --border: #E2E8F0;
-      --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
-      --radius: 12px;
+      --glass-bg: rgba(255, 255, 255, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.9);
+      --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 30px 60px -15px rgba(37, 99, 235, 0.15);
+      --radius: 16px;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-liquid: cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     * {
@@ -39,111 +43,331 @@
       color: var(--text-dark);
       background-color: var(--bg-light);
       line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    /* HEADER & NAV */
-    header {
-      background-color: var(--primary);
-      position: sticky;
-      top: 0;
+    /* BACKGROUND LIQUID ORBS */
+    .ambient-background {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+      background: #F8FAFC;
+      pointer-events: none;
+    }
+
+    @keyframes liquidBlob {
+      0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      33% { transform: translate(5vw, -5vh) scale(1.1) rotate(5deg); }
+      66% { transform: translate(-5vw, 5vh) scale(0.9) rotate(-5deg); }
+      100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.7;
+      animation: liquidBlob 25s infinite alternate var(--ease-liquid);
+    }
+    .blob-1 { width: 50vw; height: 50vw; top: -10%; left: -10%; background: rgba(37, 99, 235, 0.25); }
+    .blob-2 { width: 40vw; height: 40vw; bottom: -10%; right: -10%; background: rgba(245, 158, 11, 0.2); animation-delay: -5s; animation-duration: 30s; }
+    .blob-3 { width: 35vw; height: 35vw; top: 30%; left: 40%; background: rgba(30, 58, 138, 0.15); animation-delay: -10s; animation-duration: 22s; }
+
+    /* FLOATING GLASS HEADER */
+    .header-wrapper {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      width: 100%;
       z-index: 1000;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+      pointer-events: none; /* Let clicks pass through wrappers */
+    }
+
+    header {
+      background-color: rgba(10, 37, 64, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      border-radius: 50px;
+      padding: 10px 24px;
+      width: 100%;
+      max-width: 1100px;
+      pointer-events: auto; /* Re-enable clicks on the header itself */
+      transition: all 0.4s var(--ease-out-expo);
     }
 
     .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 16px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .logo {
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 800;
       color: var(--white);
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 8px;
+      cursor: pointer;
+      transition: transform 0.3s var(--ease-out-expo);
     }
-
-    .logo span {
-      background-color: var(--accent);
-      color: var(--white);
-      padding: 4px 10px;
-      border-radius: 6px;
-    }
+    
+    .logo:hover { transform: scale(1.05); }
+    .logo span { background-color: var(--accent); color: var(--white); padding: 4px 10px; border-radius: 50px; }
 
     .nav-links {
       display: flex;
-      gap: 24px;
+      gap: 20px;
       list-style: none;
       align-items: center;
     }
 
     .nav-links a {
-      color: #E2E8F0;
+      color: rgba(255,255,255,0.7);
       text-decoration: none;
-      font-weight: 500;
-      font-size: 15px;
-      transition: color 0.2s;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 50px;
     }
 
-    .nav-links a:hover {
+    .nav-links a:hover, .nav-links a.active {
       color: var(--white);
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* DROPDOWN MENU */
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-btn {
+      color: rgba(255,255,255,0.7);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+    .dropdown-btn:hover { color: var(--white); background-color: rgba(255, 255, 255, 0.1); }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      margin-top: 15px;
+      left: 0;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      min-width: 240px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      border-radius: 16px;
+      overflow: visible; 
+      z-index: 1100;
+      border: 1px solid rgba(255, 255, 255, 1);
+      opacity: 0;
+      transform: translateY(15px) scale(0.95);
+      transition: all 0.4s var(--ease-out-expo);
+    }
+
+    /* PONT INVISIBLE POUR GARDER LE HOVER ACTIF */
+    .dropdown-content::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: transparent;
+    }
+
+    .dropdown-content a {
+      color: var(--primary) !important;
+      padding: 14px 20px;
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      background: transparent;
+    }
+    
+    .dropdown-content a:first-child {
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+    }
+    
+    .dropdown-content a:last-child {
+        border-bottom: none;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+    }
+
+    .dropdown-content a:hover {
+      background-color: rgba(37, 99, 235, 0.08);
+      color: var(--accent) !important;
+      padding-left: 28px;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
 
     .phone-cta-nav {
-      background-color: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 8px 16px;
-      border-radius: 50px;
+      background-color: var(--accent) !important;
       color: var(--white) !important;
-      font-weight: 600 !important;
+      box-shadow: 0 8px 15px rgba(37, 99, 235, 0.3);
+      transition: all 0.4s var(--ease-out-expo) !important;
+    }
+
+    .phone-cta-nav:hover {
+      background-color: var(--accent-hover) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    /* SPA PAGES */
+    .page {
+      display: none;
+      animation: pageFadeIn 0.8s var(--ease-out-expo) forwards;
+    }
+
+    @keyframes pageFadeIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.98); filter: blur(5px); }
+      to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    .page.active { display: block; }
+
+    /* LIQUID ANIMATIONS GLOBALES AU SCROLL (FOCUS-IN REVEAL) */
+    .reveal {
+      opacity: 0;
+      transform: translateY(60px) scale(0.94);
+      filter: blur(10px);
+      transition: opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo), filter 1s var(--ease-out-expo);
+      will-change: opacity, transform, filter;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+
+    /* CLASSES GLASSMORPHISM (LIQUID GLASS) */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--glass-shadow);
+      transition: all 0.5s var(--ease-liquid);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Changé de ::before à ::after pour ne pas casser le crochet des listes */
+    .glass-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%; height: 100%;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-25deg);
+      transition: 0.7s;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .glass-card:hover::after {
+      left: 200%;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: var(--shadow-hover);
+      background: rgba(255, 255, 255, 0.8);
     }
 
     /* HERO SECTION */
     .hero {
       position: relative;
-      background: linear-gradient(135deg, rgba(10, 37, 64, 0.92) 0%, rgba(30, 58, 138, 0.88) 100%), 
-                  url('https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=1600') center/cover no-repeat;
+      background: linear-gradient(135deg, rgba(10, 37, 64, 0.7) 0%, rgba(30, 58, 138, 0.6) 100%), 
+                  url('https://lh3.googleusercontent.com/d/1TrqTgThw9Cm_wrUwtr82hBs1cCc9mQ1E') center/cover no-repeat;
       color: var(--white);
-      padding: 80px 24px 100px;
+      padding: 160px 24px 120px;
       text-align: center;
+      overflow: hidden;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
     }
 
     .hero-content {
       max-width: 850px;
       margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(50px) scale(0.95); filter: blur(10px); }
+      to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
     }
 
     .hero-badge {
       display: inline-block;
-      background-color: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 8px 20px;
       border-radius: 50px;
       font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: heroFadeUp 1s var(--ease-out-expo) 0.1s forwards;
     }
 
     .hero h1 {
-      font-size: 48px;
+      font-size: 56px;
       font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+      opacity: 0;
+      animation: heroFadeUp 1s var(--ease-out-expo) 0.2s forwards;
     }
 
     .hero p {
-      font-size: 20px;
-      color: #CBD5E1;
-      margin-bottom: 32px;
+      font-size: 22px;
+      color: #E2E8F0;
+      margin-bottom: 40px;
       font-weight: 400;
+      opacity: 0;
+      animation: heroFadeUp 1s var(--ease-out-expo) 0.3s forwards;
     }
 
     .hero-buttons {
@@ -151,710 +375,1001 @@
       justify-content: center;
       gap: 16px;
       flex-wrap: wrap;
-      margin-bottom: 40px;
+      margin-bottom: 50px;
+      opacity: 0;
+      animation: heroFadeUp 1s var(--ease-out-expo) 0.4s forwards;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 16px 32px;
+      padding: 16px 36px;
       font-size: 16px;
       font-weight: 700;
       border-radius: 50px;
       text-decoration: none;
-      transition: all 0.25s ease;
+      transition: all 0.5s var(--ease-liquid);
       cursor: pointer;
+      border: none;
+      position: relative;
+      overflow: hidden;
     }
 
     .btn-primary {
       background-color: var(--white);
       color: var(--primary);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-      background-color: #F1F5F9;
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 20px 40px rgba(255, 255, 255, 0.4); 
+      background-color: #F8FAFC;
     }
 
     .btn-secondary {
-      background-color: transparent;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       color: var(--white);
-      border: 2px solid rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.5);
     }
 
     .btn-secondary:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.2);
       border-color: var(--white);
-      transform: translateY(-2px);
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     }
 
     .rating-summary-hero {
       display: inline-flex;
       flex-direction: column;
       align-items: center;
-      background-color: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(8px);
-      padding: 12px 24px;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 16px 32px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      opacity: 0;
+      animation: heroFadeUp 1s var(--ease-out-expo) 0.5s forwards;
+      transition: all 0.5s var(--ease-liquid);
+    }
+    
+    .rating-summary-hero:hover {
+      transform: translateY(-8px) scale(1.05);
+      background: rgba(15, 23, 42, 0.6);
+      border-color: rgba(255, 255, 255, 0.4);
     }
 
     .rating-score-line {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 20px;
-      font-weight: 700;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: 800;
     }
 
-    .stars-hero {
-      color: var(--gold);
-      letter-spacing: 2px;
-    }
+    .stars-hero { color: var(--gold); letter-spacing: 3px; text-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
+    .rating-sub { font-size: 14px; color: #CBD5E1; margin-top: 4px; font-weight: 500; }
 
-    .rating-sub {
-      font-size: 13px;
-      color: #94A3B8;
-      margin-top: 2px;
-    }
-
-    /* REVIEWS SLIDER */
+    /* REVIEWS SECTION CAROUSEL */
     .reviews-section {
-      padding: 70px 24px;
-      background-color: var(--white);
+      padding: 100px 24px;
       text-align: center;
       overflow: hidden;
     }
 
     .section-title {
-      font-size: 32px;
+      font-size: 36px;
       font-weight: 800;
-      color: var(--text-dark);
-      margin-bottom: 12px;
+      color: var(--primary);
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
     }
 
     .section-subtitle {
       font-size: 18px;
       color: var(--text-muted);
-      margin-bottom: 40px;
+      margin-bottom: 50px;
+      font-weight: 500;
     }
 
-    .slider-container {
-      max-width: 1000px;
+    .carousel-container {
+      max-width: 1050px;
       margin: 0 auto;
+      overflow: hidden;
       position: relative;
+      padding: 20px 0;
     }
 
-    .slider-track {
+    .carousel-track {
       display: flex;
-      gap: 24px;
-      overflow-x: auto;
-      padding: 10px 0;
-      scroll-snap-type: x mandatory;
-    }
-
-    .slider-track::-webkit-scrollbar {
-      height: 6px;
-    }
-    .slider-track::-webkit-scrollbar-thumb {
-      background: #CBD5E1;
-      border-radius: 10px;
+      gap: 30px;
+      transition: transform 0.8s var(--ease-liquid);
     }
 
     .review-card {
-      background-color: var(--bg-light);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px;
-      min-width: 300px;
-      max-width: 380px;
-      flex: 1 0 calc(33.333% - 16px);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 32px;
+      min-width: 320px;
+      max-width: 400px;
+      flex: 0 0 calc(33.333% - 20px);
       text-align: left;
-      box-shadow: var(--shadow);
+      box-shadow: var(--glass-shadow);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      scroll-snap-align: start;
+      transition: all 0.5s var(--ease-liquid);
     }
 
-    .review-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 16px;
+    .review-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: var(--shadow-hover);
+      background: rgba(255, 255, 255, 0.9);
     }
 
+    .review-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
     .review-avatar {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background-color: var(--accent);
-      color: var(--white);
-      font-weight: 700;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 52px; height: 52px; border-radius: 50%; background-color: var(--accent);
+      color: var(--white); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
     }
-
-    .review-author {
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--text-dark);
-    }
-
-    .review-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .review-stars {
-      color: var(--gold);
-      font-size: 16px;
-      margin-bottom: 12px;
-    }
-
-    .review-text {
-      font-size: 14px;
-      color: #334155;
-      line-height: 1.5;
-      font-style: italic;
-      margin-bottom: 16px;
-    }
-
+    .review-author { font-weight: 800; font-size: 17px; color: var(--primary); }
+    .review-meta { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+    .review-stars { color: var(--gold); font-size: 18px; margin-bottom: 16px; letter-spacing: 2px; }
+    .review-text { font-size: 15px; color: #334155; line-height: 1.6; font-style: italic; margin-bottom: 20px; }
     .review-footer {
-      border-top: 1px solid #E2E8F0;
-      padding-top: 12px;
-      font-size: 11px;
-      color: #94A3B8;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .google-reviews-btn {
-      margin-top: 24px;
-      display: inline-block;
-      color: var(--accent);
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 15px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      transition: all 0.2s;
-    }
-
-    .google-reviews-btn:hover {
-      background-color: #EFF6FF;
-      border-color: var(--accent);
-    }
-
-    /* ADVANTAGES */
-    .advantages-section {
-      padding: 80px 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .advantages-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin-top: 48px;
-    }
-
-    .adv-card {
-      background-color: var(--white);
-      padding: 32px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      transition: transform 0.25s ease;
-    }
-
-    .adv-card:hover {
-      transform: translateY(-4px);
-    }
-
-    .adv-icon {
-      font-size: 32px;
-      margin-bottom: 16px;
-      display: inline-block;
-      background-color: #EFF6FF;
-      width: 60px;
-      height: 60px;
-      line-height: 60px;
-      text-align: center;
-      border-radius: 12px;
-      color: var(--accent);
-    }
-
-    .adv-card h3 {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--text-dark);
-    }
-
-    .adv-card p {
-      color: var(--text-muted);
-      font-size: 15px;
+      border-top: 1px solid rgba(0,0,0,0.05); padding-top: 16px; font-size: 12px; color: var(--accent);
+      font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
     }
 
     /* SERVICES SECTION */
-    .services-section {
-      background-color: var(--white);
-      padding: 80px 24px;
-    }
-
-    .services-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
+    .services-section { padding: 80px 24px; }
+    .services-container { max-width: 1200px; margin: 0 auto; }
     .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      margin-top: 48px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px;
     }
 
     .service-card {
-      background-color: var(--bg-light);
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      padding: 0; 
+      display: flex; flex-direction: column;
     }
 
     .service-img {
-      height: 180px;
-      background-color: #CBD5E1;
-      background-size: cover;
-      background-position: center;
+      height: 240px; background-color: #CBD5E1; background-size: cover; background-position: center;
+      transition: transform 1s var(--ease-liquid);
     }
+    .service-card:hover .service-img { transform: scale(1.08); }
 
     .service-body {
-      padding: 24px;
+      padding: 30px; flex-grow: 1; position: relative; z-index: 2;
+      background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 100%);
+      backdrop-filter: blur(10px);
     }
 
-    .service-body h3 {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 8px;
+    .service-body h3 { font-size: 22px; font-weight: 800; margin-bottom: 12px; color: var(--primary); }
+    .service-body p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+    .service-click-hint {
+      display: inline-block; margin-top: 16px; color: var(--accent); font-weight: 800; font-size: 14px;
+      transition: transform 0.4s var(--ease-liquid);
     }
+    .service-card:hover .service-click-hint { transform: translateX(8px); }
 
-    .service-body p {
-      color: var(--text-muted);
-      font-size: 14px;
+    /* ADVANTAGES SECTION */
+    .advantages-section { padding: 80px 24px; max-width: 1200px; margin: 0 auto; }
+    .advantages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 50px; }
+
+    .adv-card { padding: 40px; }
+    .adv-icon {
+      font-size: 36px; margin-bottom: 24px; display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); width: 70px; height: 70px;
+      border-radius: 16px; color: var(--accent); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1);
+      transition: all 0.5s var(--ease-liquid);
     }
+    .adv-card:hover .adv-icon { transform: scale(1.15) rotate(8deg); background: var(--accent); color: var(--white); box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3); }
+    .adv-card h3 { font-size: 22px; font-weight: 800; margin-bottom: 16px; color: var(--primary); }
+    .adv-card p { color: var(--text-muted); font-size: 16px; line-height: 1.6; }
 
     /* FORM SECTION */
     .quote-section {
-      padding: 80px 24px;
-      background: linear-gradient(135deg, #0A2540 0%, #1E293B 100%);
+      padding: 120px 24px;
+      background: linear-gradient(135deg, rgba(10, 37, 64, 0.8) 0%, rgba(30, 58, 138, 0.7) 100%), 
+                  url('https://lh3.googleusercontent.com/d/1p1Q0I7U1YE9-jhruIwU0EnBLcoJTnrEh') center/cover no-repeat;
       color: var(--white);
+      position: relative;
     }
 
     .quote-container {
-      max-width: 700px;
+      max-width: 800px;
       margin: 0 auto;
-      background-color: var(--white);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
       color: var(--text-dark);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      padding: 50px;
+      border-radius: 24px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,1);
     }
 
-    .quote-container h2 {
-      font-size: 28px;
-      font-weight: 800;
-      text-align: center;
-      margin-bottom: 8px;
-      color: var(--text-dark);
-    }
+    .quote-container h2 { font-size: 32px; font-weight: 800; text-align: center; margin-bottom: 12px; color: var(--primary); }
+    .quote-container p { text-align: center; color: var(--text-muted); margin-bottom: 40px; font-size: 16px; font-weight: 500;}
 
-    .quote-container p {
-      text-align: center;
-      color: var(--text-muted);
-      margin-bottom: 32px;
-      font-size: 15px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      font-size: 14px;
-      margin-bottom: 8px;
-      color: var(--text-dark);
-    }
-
+    .form-group { margin-bottom: 24px; }
+    .form-group label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 10px; color: var(--primary); }
     .form-control {
-      width: 100%;
-      padding: 14px 16px;
-      font-size: 15px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background-color: var(--bg-light);
-      font-family: inherit;
-      transition: border-color 0.2s;
+      width: 100%; padding: 16px 20px; font-size: 16px; border: 2px solid rgba(0,0,0,0.05);
+      border-radius: 12px; background-color: rgba(255,255,255,0.7); font-family: inherit; font-weight: 500;
+      transition: all 0.4s var(--ease-liquid);
     }
-
     .form-control:focus {
-      outline: none;
-      border-color: var(--accent);
-      background-color: var(--white);
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      outline: none; border-color: var(--accent); background-color: var(--white);
+      box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15); transform: translateY(-2px);
     }
 
     .btn-submit {
-      width: 100%;
-      background-color: var(--accent);
-      color: var(--white);
-      border: none;
-      padding: 16px;
-      font-size: 16px;
-      font-weight: 700;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-      margin-top: 10px;
+      width: 100%; background: linear-gradient(135deg, var(--accent) 0%, var(--primary-light) 100%);
+      color: var(--white); border: none; padding: 20px; font-size: 18px; font-weight: 800;
+      border-radius: 12px; cursor: pointer; transition: all 0.5s var(--ease-liquid);
+      margin-top: 16px; box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
+    }
+    .btn-submit:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(37, 99, 235, 0.5);
     }
 
-    .btn-submit:hover {
-      background-color: var(--accent-hover);
+    /* SERVICE PAGES HEADERS */
+    .service-page-header {
+      background: linear-gradient(135deg, rgba(10,37,64,0.85) 0%, rgba(30,58,138,0.85) 100%);
+      color: var(--white); padding: 140px 24px 80px; text-align: center;
+      border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
     }
+    .service-page-header h1 { font-size: 48px; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px; }
+    .service-page-header p { font-size: 20px; color: #E2E8F0; max-width: 800px; margin: 0 auto 36px; line-height: 1.6; }
+
+    .service-page-content { max-width: 1150px; margin: 0 auto; padding: 80px 24px; }
+    .service-intro { text-align: center; max-width: 850px; margin: 0 auto 60px; }
+    .service-intro h2 { font-size: 36px; font-weight: 800; color: var(--primary); margin-bottom: 16px; }
+
+    /* SLIDERS GRID */
+    .sliders-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 40px; margin-bottom: 80px; }
+    .ba-card { padding: 32px; }
+    .ba-card h3 { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 20px; text-align: center; }
+    .ba-slider-container {
+      position: relative; width: 100%; height: 420px; overflow: hidden; border-radius: 16px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15); user-select: none;
+    }
+    .ba-image-after, .ba-image-before-inner { background-size: cover; background-position: center; }
+    .ba-image-after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    .ba-image-before { position: absolute; top: 0; left: 0; width: 50%; height: 100%; border-right: 4px solid var(--white); box-shadow: 5px 0 15px rgba(0,0,0,0.4); overflow: hidden; }
+    .ba-image-before-inner { position: absolute; top: 0; left: 0; width: 600px; height: 100%; }
+    
+    .ba-label {
+      position: absolute; bottom: 16px; padding: 8px 16px; background: rgba(15, 23, 42, 0.8);
+      color: var(--white); font-size: 13px; font-weight: 800; border-radius: 50px;
+      backdrop-filter: blur(8px); letter-spacing: 1px; text-transform: uppercase; z-index: 4;
+    }
+    .ba-label-before { left: 16px; } .ba-label-after { right: 16px; }
+    .ba-range-input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; z-index: 10; }
+    .ba-handle {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 48px; height: 48px;
+      background: var(--white); color: var(--primary); border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.4); pointer-events: none; z-index: 5; font-weight: 800; font-size: 20px;
+    }
+
+    .service-features-list { list-style: none; margin: 30px 0 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .service-features-list li {
+      font-size: 16px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 14px;
+      padding: 16px 20px;
+    }
+    .service-features-list li::before {
+      content: "✓"; color: var(--white); font-weight: 800; background: linear-gradient(135deg, var(--accent) 0%, var(--primary-light) 100%);
+      width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); flex-shrink: 0;
+    }
+
+    /* GALERIE D'IMAGES */
+    .photo-gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+    .gallery-item { padding: 0; }
+    .gallery-item img { width: 100%; height: 320px; object-fit: cover; display: block; transition: transform 0.8s var(--ease-liquid); }
+    .gallery-item:hover img { transform: scale(1.08); }
+    #page-galerie .gallery-item img { cursor: pointer; }
+    .gallery-caption {
+      padding: 20px; font-weight: 700; font-size: 15px; color: var(--primary); text-align: center;
+      background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); position: relative; z-index: 2;
+    }
+    .gallery-category-title { font-size: 28px; font-weight: 800; color: var(--primary); margin: 60px 0 30px; text-align: center; width: 100%; }
+
+    /* MODAL GALERIE PLEIN ÉCRAN */
+    .modal {
+      display: none; position: fixed; z-index: 2000; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%;
+      background-color: rgba(10, 37, 64, 0.95); backdrop-filter: blur(15px); opacity: 0; transition: opacity 0.4s ease;
+    }
+    .modal.show { opacity: 1; }
+    .modal-content {
+      margin: auto; display: block; max-width: 90%; max-height: 85vh; object-fit: contain; border-radius: 12px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.6); transform: scale(0.9); opacity: 0; transition: transform 0.5s var(--ease-liquid), opacity 0.5s ease;
+    }
+    .modal.show .modal-content { transform: scale(1); opacity: 1; }
+    .close-modal {
+      position: absolute; top: 20px; right: 40px; color: rgba(255,255,255,0.6); font-size: 50px; font-weight: 300; transition: 0.3s; cursor: pointer;
+    }
+    .close-modal:hover { color: var(--white); transform: rotate(90deg); }
+
+    /* DISPOSITION COMMERCIAL */
+    .commercial-split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch; margin-bottom: 60px; }
+    .commercial-side-card { padding: 0; }
+    .commercial-side-card img { width: 100%; height: 280px; object-fit: cover; display: block; }
+
+    /* SECTION DÉTAILS SUPPLÉMENTAIRES */
+    .extra-info-block { padding: 50px; margin-top: 60px; text-align: center; }
+    .extra-info-block h4 { font-size: 26px; font-weight: 800; color: var(--primary); margin-bottom: 20px; }
+    .extra-info-block p { color: var(--text-muted); margin-bottom: 20px; font-size: 16px; line-height: 1.8; max-width: 900px; margin-left: auto; margin-right: auto; }
 
     /* INFOS & CONTACT */
-    .info-section {
-      padding: 80px 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-    }
-
-    .info-box h3 {
-      font-size: 24px;
-      font-weight: 800;
-      margin-bottom: 16px;
-    }
-
-    .areas-list {
-      list-style: none;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .areas-list li {
-      background-color: var(--white);
-      padding: 12px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      font-weight: 600;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .areas-list li::before {
-      content: "📍";
-    }
-
-    .contact-details {
-      margin-top: 20px;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .contact-item a {
-      color: var(--accent);
-      text-decoration: none;
-    }
+    .info-section { padding: 100px 24px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+    .info-box h3 { font-size: 28px; font-weight: 800; margin-bottom: 24px; color: var(--primary); }
+    .areas-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .areas-list li { padding: 16px 20px; font-weight: 700; font-size: 15px; color: var(--primary); display: flex; align-items: center; gap: 12px; }
+    .areas-list li::before { content: "📍"; font-size: 18px; }
+    .contact-item { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; font-size: 20px; font-weight: 700; color: var(--primary); }
+    .contact-item a { color: var(--accent); text-decoration: none; transition: color 0.3s ease; }
+    .contact-item a:hover { color: var(--accent-hover); text-decoration: underline; }
 
     /* FOOTER */
-    footer {
-      background-color: var(--primary);
-      color: #94A3B8;
-      padding: 40px 24px;
-      text-align: center;
-      font-size: 14px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
+    footer { background-color: var(--primary); color: #94A3B8; padding: 50px 24px; text-align: center; font-size: 15px; }
+    footer p { margin-bottom: 12px; font-weight: 500; }
+    footer a { color: var(--white); text-decoration: none; font-weight: 700; transition: color 0.3s ease; }
+    footer a:hover { color: var(--accent); }
 
-    footer p {
-      margin-bottom: 12px;
-    }
-
-    footer a {
-      color: var(--white);
-      text-decoration: none;
-    }
-
+    @media (max-width: 900px) { .commercial-split-layout { grid-template-columns: 1fr; } }
     @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 34px;
-      }
-      .hero p {
-        font-size: 16px;
-      }
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-      .info-section {
-        grid-template-columns: 1fr;
-      }
-      .nav-links {
-        display: none;
-      }
-      .review-card {
-        min-width: 280px;
-        flex: 1 0 85%;
-      }
+      .hero h1 { font-size: 38px; }
+      .hero p { font-size: 18px; }
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      .info-section { grid-template-columns: 1fr; }
+      .sliders-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .review-card { min-width: 280px; flex: 0 0 90%; }
+      .ba-slider-container { height: 300px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <div class="nav-container">
-      <a href="#" class="logo"><span>CH</span> VITRES</a>
-      <ul class="nav-links">
-        <li><a href="#services">Services</a></li>
-        <li><a href="#pourquoi">Pourquoi Nous</a></li>
-        <li><a href="#avis">Avis Clients</a></li>
-        <li><a href="#soumission">Soumission</a></li>
-        <li><a href="tel:5148039925" class="phone-cta-nav">📞 (514) 803-9925</a></li>
-      </ul>
-    </div>
-  </header>
+  <!-- BACKGROUND ORBS POUR LE LIQUID GLASS EFFECT -->
+  <div class="ambient-background">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
 
-  <!-- HERO SECTION -->
-  <section class="hero">
-    <div class="hero-content">
-      <div class="hero-badge">Montréal • Rive-Nord • Rive-Sud</div>
-      <h1>Le spécialiste de vos vitres.</h1>
-      <p>Un service professionnel, rapide et consciencieux pour des fenêtres étincelantes toute la saison.</p>
-      
-      <div class="hero-buttons">
-        <a href="#soumission" class="btn btn-primary">Combien ça coûte ?</a>
-        <a href="tel:5148039925" class="btn btn-secondary">📞 Nous appeler</a>
+  <!-- FLOATING HEADER NAVIGATION -->
+  <div class="header-wrapper">
+    <header>
+      <div class="nav-container">
+        <a onclick="showPage('accueil')" class="logo"><span>CH</span> VITRES</a>
+        <ul class="nav-links">
+          <li><a onclick="showPage('accueil')" class="active" id="nav-accueil">Accueil</a></li>
+          
+          <li class="dropdown">
+            <div class="dropdown-btn">Résidentiel ▾</div>
+            <div class="dropdown-content">
+              <a onclick="showPage('lavage-vitres')">Lavage de vitres</a>
+              <a onclick="showPage('blanchiment-gouttieres')">Blanchiment de gouttières</a>
+              <a onclick="showPage('reparation-moustiquaires')">Réparation de moustiquaires</a>
+            </div>
+          </li>
+
+          <li><a onclick="showPage('commercial')" id="nav-commercial">Commercial</a></li>
+          <li><a onclick="showPage('galerie')" id="nav-galerie">Galerie</a></li>
+
+          <li><a onclick="scrollToForm()" class="phone-cta-nav">Soumission</a></li>
+          <li><a href="tel:5148039925" style="color:white;">📞 (514) 803-9925</a></li>
+        </ul>
       </div>
+    </header>
+  </div>
 
-      <div class="rating-summary-hero">
-        <div class="rating-score-line">
-          <span>5.0</span>
-          <span class="stars-hero">★★★★★</span>
-        </div>
-        <div class="rating-sub">Basé sur plus de 65 avis vérifiés sur Google</div>
-      </div>
-    </div>
-  </section>
+  <!-- ================= PAGE ACCUEIL ================= -->
+  <div id="page-accueil" class="page active">
 
-  <!-- REVIEWS SECTION -->
-  <section class="reviews-section" id="avis">
-    <h2 class="section-title">Ce que nos clients disent</h2>
-    <p class="section-subtitle">La satisfaction de nos clients est notre plus grande fierté.</p>
-
-    <div class="slider-container">
-      <div class="slider-track" id="sliderTrack">
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">Montréal • Rive-Nord • Rive-Sud</div>
+        <h1>Le spécialiste de vos vitres.</h1>
+        <p>Un service professionnel, rapide et consciencieux pour des fenêtres étincelantes toute la saison.</p>
         
-        <!-- AVIS 1 -->
-        <div class="review-card">
-          <div>
-            <div class="review-header">
-              <div class="review-avatar" style="background-color: #AD1457;">K</div>
-              <div>
-                <div class="review-author">Karine Dessler</div>
-                <div class="review-meta">Client fidèle • 4 avis</div>
-              </div>
-            </div>
-            <div class="review-stars">★★★★★</div>
-            <div class="review-text">"Cela fait 4 fois que j'utilise l'équipe de CH Vitres pour faire laver mes fenêtres et je suis extrêmement satisfaite !! 5 étoiles !! Service impeccable !"</div>
-          </div>
-          <div class="review-footer">Avis Google Vérifié</div>
+        <div class="hero-buttons">
+          <a onclick="scrollToForm()" class="btn btn-primary">Combien ça coûte ?</a>
+          <a href="tel:5148039925" class="btn btn-secondary">📞 Nous appeler</a>
         </div>
 
-        <!-- AVIS 2 -->
-        <div class="review-card">
-          <div>
-            <div class="review-header">
-              <div class="review-avatar" style="background-color: #00838F;">C</div>
-              <div>
-                <div class="review-author">Catherine Legare</div>
-                <div class="review-meta">Client résidentiel</div>
-              </div>
-            </div>
-            <div class="review-stars">★★★★★</div>
-            <div class="review-text">"Nous sommes très satisfaits du lavage de nos vitres. Travailler avec CH Vitres a été facile. Ce sont de jeunes entrepreneurs organisés, réactifs et vaillants."</div>
+        <div class="rating-summary-hero">
+          <div class="rating-score-line">
+            <span>5.0</span>
+            <span class="stars-hero">★★★★★</span>
           </div>
-          <div class="review-footer">Avis Google Vérifié</div>
+          <div class="rating-sub">Basé sur plus de 65 avis vérifiés sur Google</div>
         </div>
+      </div>
+    </section>
 
-        <!-- AVIS 3 -->
-        <div class="review-card">
-          <div>
-            <div class="review-header">
-              <div class="review-avatar" style="background-color: #1565C0;">E</div>
-              <div>
-                <div class="review-author">Eric Labranche</div>
-                <div class="review-meta">Client commercial</div>
+    <!-- CAROUSEL DES AVIS CLIENTS -->
+    <section class="reviews-section reveal" id="avis">
+      <h2 class="section-title">Ce que nos clients disent</h2>
+      <p class="section-subtitle">La satisfaction de nos clients est notre plus grande fierté.</p>
+
+      <div class="carousel-container">
+        <div class="carousel-track" id="carouselTrack">
+          
+          <div class="review-card glass-card">
+            <div>
+              <div class="review-header">
+                <div class="review-avatar" style="background-color: #AD1457;">K</div>
+                <div>
+                  <div class="review-author">Karine Dessler</div>
+                  <div class="review-meta">Client fidèle • 4 avis</div>
+                </div>
               </div>
+              <div class="review-stars">★★★★★</div>
+              <div class="review-text">"Cela fait 4 fois que j'utilise l'équipe de CH Vitres pour faire laver mes fenêtres et je suis extrêmement satisfaite !! 5 étoiles !! Service impeccable ! Mes fenêtres sont éclatantes !"</div>
             </div>
-            <div class="review-stars">★★★★★</div>
-            <div class="review-text">"Jeune équipe dynamique et professionnelle. Le travail est bien fait et le personnel très poli et courtois. Bravo !"</div>
+            <div class="review-footer">Avis Google Vérifié</div>
           </div>
-          <div class="review-footer">Avis Google Vérifié</div>
-        </div>
 
-        <!-- AVIS 4 -->
-        <div class="review-card">
-          <div>
-            <div class="review-header">
-              <div class="review-avatar" style="background-color: #C2185B;">J</div>
-              <div>
-                <div class="review-author">JP Bo</div>
-                <div class="review-meta">Shop Angus</div>
+          <div class="review-card glass-card">
+            <div>
+              <div class="review-header">
+                <div class="review-avatar" style="background-color: #6A1B9A;">F</div>
+                <div>
+                  <div class="review-author">Francoise Marfoglia</div>
+                  <div class="review-meta">6 avis</div>
+                </div>
               </div>
+              <div class="review-stars">★★★★★</div>
+              <div class="review-text">"J'étais très satisfaite du service reçu. Henri est extrêmement consciencieux, poli et travaille bien."</div>
             </div>
-            <div class="review-stars">★★★★★</div>
-            <div class="review-text">"Service hyper courtois, nous sommes très satisfaits ! Qualité et ponctualité. Une belle référence pour les Shop Angus et tout autre quartier."</div>
+            <div class="review-footer">Avis Google Vérifié</div>
           </div>
-          <div class="review-footer">Avis Google Vérifié</div>
-        </div>
 
-        <!-- AVIS 5 -->
-        <div class="review-card">
-          <div>
-            <div class="review-header">
-              <div class="review-avatar" style="background-color: #7B1FA2;">N</div>
-              <div>
-                <div class="review-author">Nathalie Deno</div>
-                <div class="review-meta">Client résidentiel</div>
+          <div class="review-card glass-card">
+            <div>
+              <div class="review-header">
+                <div class="review-avatar" style="background-color: #E65100;">G</div>
+                <div>
+                  <div class="review-author">Gwen Haerlingen</div>
+                  <div class="review-meta">Local Guide • 55 avis</div>
+                </div>
               </div>
+              <div class="review-stars">★★★★★</div>
+              <div class="review-text">"Prix raisonnable. Excellent travail ! Très poli, respectueux et professionnel. Il n'a pas eu peur des défis."</div>
             </div>
-            <div class="review-stars">★★★★★</div>
-            <div class="review-text">"Bon travail, fait consciencieusement. Merci Henri !"</div>
+            <div class="review-footer">Avis Google Vérifié</div>
           </div>
-          <div class="review-footer">Avis Google Vérifié</div>
-        </div>
 
+          <div class="review-card glass-card">
+            <div>
+              <div class="review-header">
+                <div class="review-avatar" style="background-color: #00838F;">C</div>
+                <div>
+                  <div class="review-author">Catherine Legare</div>
+                  <div class="review-meta">1 avis</div>
+                </div>
+              </div>
+              <div class="review-stars">★★★★★</div>
+              <div class="review-text">"Nous sommes très satisfaits du lavage de nos vitres. Travailler avec CH Vitres a été facile. Ce sont de jeunes entrepreneurs organisés, réactifs dans leurs communications, vaillants et soucieux de la satisfaction des clients."</div>
+            </div>
+            <div class="review-footer">Avis Google Vérifié</div>
+          </div>
+          
+          <div class="review-card glass-card">
+            <div>
+              <div class="review-header">
+                <div class="review-avatar" style="background-color: #1565C0;">E</div>
+                <div>
+                  <div class="review-author">Eric Labranche</div>
+                  <div class="review-meta">1 avis</div>
+                </div>
+              </div>
+              <div class="review-stars">★★★★★</div>
+              <div class="review-text">"Jeune équipe dynamique et professionnel. Le travail est bien fait et le personnel très poli et courtois. C'est encourageant de voir de jeunes entrepreneurs avec le soucis d'offrir un service de qualité. Bravo !"</div>
+            </div>
+            <div class="review-footer">Avis Google Vérifié</div>
+          </div>
+
+          <div class="review-card glass-card">
+            <div>
+              <div class="review-header">
+                <div class="review-avatar" style="background-color: #C2185B;">J</div>
+                <div>
+                  <div class="review-author">JP Bo</div>
+                  <div class="review-meta">4 avis • 6 photos</div>
+                </div>
+              </div>
+              <div class="review-stars">★★★★★</div>
+              <div class="review-text">"Service hyper courtois, nous sommes très satisfaits! Qualité et ponctualité :) Une belle référence pour les Shop Angus et tout autre quartier."</div>
+            </div>
+            <div class="review-footer">Avis Google Vérifié</div>
+          </div>
+
+          <div class="review-card glass-card">
+            <div>
+              <div class="review-header">
+                <div class="review-avatar" style="background-color: #7B1FA2;">N</div>
+                <div>
+                  <div class="review-author">Nathalie Deno</div>
+                  <div class="review-meta">5 avis</div>
+                </div>
+              </div>
+              <div class="review-stars">★★★★★</div>
+              <div class="review-text">"Bon travail, fait consciencieusement. Merci Henri"</div>
+            </div>
+            <div class="review-footer">Avis Google Vérifié</div>
+          </div>
+
+        </div>
       </div>
 
-      <a href="https://share.google/H0f3xhHbCMxQEHyUb" target="_blank" class="google-reviews-btn">Voir tous nos 69 avis sur Google →</a>
+      <a href="https://www.google.com/search?q=ch+vitres&rlz=1C5KXLH_enCA1218CA1218&oq=ch+vitres&gs_lcrp=EgZjaHJvbWUqBggAEEUYOzIGCAAQRRg7MgcIARAAGIAEMgcIAhAAGIAEMgcIAxAAGIAEMgcIBBAAGIAEMgcIBRAAGIAEMgYIBhBFGDwyBggHEEUYPNIBCDEwMTNqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8#lrd=0xcdb9b4310e85c19:0x159c7249ebc44b60,1,,,," target="_blank" class="google-reviews-btn">Voir tous nos avis sur Google →</a>
+    </section>
+
+    <!-- SECTION NOS SERVICES -->
+    <section class="services-section reveal" id="services">
+      <div class="services-container">
+        <h2 class="section-title" style="text-align: center;">Nos Services</h2>
+        <p class="section-subtitle" style="text-align: center;">Des solutions complètes pour l'entretien extérieur de votre propriété.</p>
+
+        <div class="services-grid">
+          <!-- SERVICE 1 -->
+          <div class="service-card glass-card reveal delay-1" onclick="showPage('lavage-vitres')">
+            <div class="service-img" style="background-image: url('https://lh3.googleusercontent.com/d/1sMa82dvYF0NYErr_J2MuIe0qxxCbYr4G');"></div>
+            <div class="service-body">
+              <h3>Lavage de Vitres</h3>
+              <p>Nettoyage intérieur et extérieur résidentiel et commercial pour une clarté maximale.</p>
+              <span class="service-click-hint">Voir les démonstrations avant/après →</span>
+            </div>
+          </div>
+
+          <!-- SERVICE 2 -->
+          <div class="service-card glass-card reveal delay-2" onclick="showPage('blanchiment-gouttieres')">
+            <div class="service-img" style="background-image: url('https://lh3.googleusercontent.com/d/1nhkkGvcPsT5EnCLql-1EHqcn_vGS4RJu');"></div>
+            <div class="service-body">
+              <h3>Blanchiment de Gouttières</h3>
+              <p>Restauration de l'apparence d'origine de vos gouttières extérieures pour rehausser votre façade.</p>
+              <span class="service-click-hint">Voir les démonstrations avant/après →</span>
+            </div>
+          </div>
+
+          <!-- SERVICE 3 -->
+          <div class="service-card glass-card reveal delay-3" onclick="showPage('reparation-moustiquaires')">
+            <div class="service-img" style="background-image: url('https://lh3.googleusercontent.com/d/1CbGLGdoEDvzJBAwon0kDd1i3g5SsWBPM');"></div>
+            <div class="service-body">
+              <h3>Réparation de Moustiquaires</h3>
+              <p>Remplacement et réparation professionnelle de vos moustiquaires abîmés ou déchirés.</p>
+              <span class="service-click-hint">Voir les démonstrations avant/après →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION POURQUOI CHOISIR CH VITRES -->
+    <section class="advantages-section reveal" id="pourquoi">
+      <h2 class="section-title" style="text-align: center;">Pourquoi choisir CH Vitres ?</h2>
+      <p class="section-subtitle" style="text-align: center;">Un service clé en main pensé pour votre tranquillité d'esprit.</p>
+
+      <div class="advantages-grid">
+        <div class="adv-card glass-card reveal delay-1">
+          <div class="adv-icon">⚡</div>
+          <h3>Interventions Rapides</h3>
+          <p>Prise de rendez-vous simple et exécution rapide pour ne pas faire attendre vos projets.</p>
+        </div>
+
+        <div class="adv-card glass-card reveal delay-2">
+          <div class="adv-icon">📅</div>
+          <h3>Horaires Flexibles (7/7)</h3>
+          <p>Nous savons que vous êtes occupé. Nous travaillons autour de votre horaire toute la semaine.</p>
+        </div>
+
+        <div class="adv-card glass-card reveal delay-3">
+          <div class="adv-icon">🤝</div>
+          <h3>Aucun Engagement</h3>
+          <p>Aucun dépôt requis à l'avance. Vous payez seulement une fois le travail complété.</p>
+        </div>
+
+        <div class="adv-card glass-card reveal delay-1">
+          <div class="adv-icon">✨</div>
+          <h3>Satisfaction 100 %</h3>
+          <p>Nous restons sur place jusqu'à ce que le résultat réponde parfaitement à vos standards.</p>
+        </div>
+
+        <div class="adv-card glass-card reveal delay-2">
+          <div class="adv-icon">🛡️</div>
+          <h3>Garantie 72 h</h3>
+          <p>Des retouches à faire ? Contactez-nous et nous reviendrons gratuitement sans discuter.</p>
+        </div>
+
+        <div class="adv-card glass-card reveal delay-3">
+          <div class="adv-icon">🧼</div>
+          <h3>4 Services pour 1 Prix</h3>
+          <p>Les vitres, les cadres, les bas de fenêtres et les moustiquaires sont tous lavés soigneusement.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ================= PAGE DÉDIÉE : LAVAGE DE VITRES ================= -->
+  <div id="page-lavage-vitres" class="page">
+    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.75), rgba(10,37,64,0.75)), url('https://drive.google.com/thumbnail?id=1dT2_F7ok4L2AqLNDDTrjozMWFWAt0sif&sz=w1200') center/cover no-repeat;">
+      <h1>Lavage de Vitres Professionnel</h1>
+      <p>Un lavage méticuleux de vos vitres, cadrages, rails et mécanismes pour une luminosité optimale.</p>
+      <button onclick="scrollToForm()" class="btn btn-primary">Obtenir une soumission gratuite</button>
     </div>
-  </section>
 
-  <!-- POURQUOI CHOISIR CH VITRES -->
-  <section class="advantages-section" id="pourquoi">
-    <h2 class="section-title" style="text-align: center;">Pourquoi choisir CH Vitres ?</h2>
-    <p class="section-subtitle" style="text-align: center;">Un service clé en main pensé pour votre tranquillité d'esprit.</p>
-
-    <div class="advantages-grid">
-      <div class="adv-card">
-        <div class="adv-icon">⚡</div>
-        <h3>Interventions Rapides</h3>
-        <p>Prise de rendez-vous simple et exécution rapide pour ne pas faire attendre vos projets.</p>
+    <div class="service-page-content">
+      <div class="service-intro reveal">
+        <p>Faites glisser le curseur blanc sur les images pour constater l'efficacité de notre nettoyage professionnel.</p>
       </div>
 
-      <div class="adv-card">
-        <div class="adv-icon">📅</div>
-        <h3>Horaires Flexibles (7/7)</h3>
-        <p>Nous savons que vous êtes occupé. Nous travaillons autour de votre horaire toute la semaine.</p>
+      <div class="sliders-grid">
+        <!-- SLIDER 1 : Nettoyage du mécanisme et des rails -->
+        <div class="ba-card glass-card reveal delay-1">
+          <h3>1. Nettoyage du mécanisme et des rails</h3>
+          <div class="ba-slider-container">
+            <div class="ba-image-after" style="background-image: url('https://lh3.googleusercontent.com/d/1NW_xHPwIIbZsBdI-cbyFuf0T5EQmIFI8');"></div>
+            <div class="ba-image-before" id="ba-before-vitres-rails" style="width: 50%;">
+              <div class="ba-image-before-inner" style="background-image: url('https://lh3.googleusercontent.com/d/1i-rmIC6vyfm5_TpLNjFpCi66ldOFExc6');"></div>
+            </div>
+            <span class="ba-label ba-label-before">Avant</span>
+            <span class="ba-label ba-label-after">Après</span>
+            <div class="ba-handle" id="ba-handle-vitres-rails" style="left: 50%;">↔</div>
+            <input type="range" min="0" max="100" value="50" class="ba-range-input" oninput="updateSlider('vitres-rails', this.value)">
+          </div>
+        </div>
+
+        <!-- SLIDER 2 : Nettoyage des vitres extérieures -->
+        <div class="ba-card glass-card reveal delay-2">
+          <h3>2. Vitres extérieures & cadrages</h3>
+          <div class="ba-slider-container">
+            <div class="ba-image-after" style="background-image: url('https://lh3.googleusercontent.com/d/15Mk03nQsvpZ9hNb14kC-ovv15Qw2xiED');"></div>
+            <div class="ba-image-before" id="ba-before-vitres-ext" style="width: 50%;">
+              <div class="ba-image-before-inner" style="background-image: url('https://lh3.googleusercontent.com/d/1MIAFIB8wSX2VJUsu0x46FucQo2rulepM');"></div>
+            </div>
+            <span class="ba-label ba-label-before">Avant</span>
+            <span class="ba-label ba-label-after">Après</span>
+            <div class="ba-handle" id="ba-handle-vitres-ext" style="left: 50%;">↔</div>
+            <input type="range" min="0" max="100" value="50" class="ba-range-input" oninput="updateSlider('vitres-ext', this.value)">
+          </div>
+        </div>
       </div>
 
-      <div class="adv-card">
-        <div class="adv-icon">🤝</div>
-        <h3>Aucun Engagement</h3>
-        <p>Aucun dépôt requis à l'avance. Vous payez seulement une fois le travail complété.</p>
+      <h3 class="reveal" style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Ce que comprend le service de lavage :</h3>
+      <ul class="service-features-list reveal">
+        <li class="glass-card">Lavage intérieur et extérieur complet des surfaces vitrées</li>
+        <li class="glass-card delay-1">Lavage professionnel des cadrages et des moustiquaires</li>
+      </ul>
+      
+      <h3 class="reveal" style="font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 20px; margin-top: 30px;">Services complémentaires disponibles :</h3>
+      <ul class="service-features-list reveal">
+        <li class="glass-card delay-2">Dépoussiérage et dégraissage méticuleux des rails</li>
+        <li class="glass-card delay-3">Nettoyage des mécanismes d'ouverture</li>
+      </ul>
+
+      <div class="extra-info-block glass-card reveal">
+        <h4>Pourquoi un nettoyage régulier des vitres est-il essentiel ?</h4>
+        <p>Au fil des saisons, la poussière, le pollen, la pollution urbaine et les résidus minéraux s'accumulent sur vos fenêtres. Un lavage régulier permet non seulement de maximiser la lumière naturelle dans votre espace de vie, mais prolonge également la durée de vie de vos fenêtres en évitant l'incrustation permanente de contaminants dans le verre et les cadrages.</p>
+        <p>La bonne fréquence pour nettoyer ses vitres est de <strong>1 à 3 fois par année</strong>, afin d'assurer une clarté optimale. La technologie qu'on utilise pour l'extérieur est le lavage à l'eau pure, qui ne laisse pas de traces car l'eau n'a pas de minéraux. À l'intérieur, on utilise la bonne méthode traditionnelle au squeegee. On fait attention aux meubles, on utilise des serviettes pour protéger le plancher et nos techniciens ont une paire de souliers spécialement faite pour l'intérieur.</p>
+      </div>
+      
+      <div class="reveal" style="text-align: center; margin-top: 50px;">
+        <a onclick="showPage('galerie')" class="btn btn-primary" style="font-size: 18px; padding: 20px 40px;">Voir plus de photos dans notre galerie →</a>
       </div>
 
-      <div class="adv-card">
-        <div class="adv-icon">✨</div>
-        <h3>Satisfaction 100 %</h3>
-        <p>Nous restons sur place jusqu'à ce que le résultat réponde parfaitement à vos standards.</p>
-      </div>
-
-      <div class="adv-card">
-        <div class="adv-icon">🛡️</div>
-        <h3>Garantie 72 h</h3>
-        <p>Des retouches à faire ? Contactez-nous et nous reviendrons gratuitement sans discuter.</p>
-      </div>
-
-      <div class="adv-card">
-        <div class="adv-icon">🧼</div>
-        <h3>4 Services pour 1 Prix</h3>
-        <p>Les vitres, les cadres, les bas de fenêtres et les moustiquaires sont tous lavés soigneusement.</p>
-      </div>
     </div>
-  </section>
+  </div>
 
-  <!-- SERVICES -->
-  <section class="services-section" id="services">
-    <div class="services-container">
-      <h2 class="section-title" style="text-align: center;">Nos Services</h2>
-      <p class="section-subtitle" style="text-align: center;">Des solutions complètes pour l'entretien extérieur de votre propriété.</p>
+  <!-- ================= PAGE DÉDIÉE : BLANCHIMENT DE GOUTTIÈRES ================= -->
+  <div id="page-blanchiment-gouttieres" class="page">
+    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.75), rgba(10,37,64,0.75)), url('https://drive.google.com/thumbnail?id=191edJyMTYkw25SPD_Arfl6Z4wL0LGBOJ&sz=w1200') center/cover no-repeat;">
+      <h1>Blanchiment de Gouttières</h1>
+      <p>Restaurez l'éclat d'origine de vos gouttières en aluminium et éliminez les lignes noires d'oxydation.</p>
+      <button onclick="scrollToForm()" class="btn btn-primary">Obtenir une soumission gratuite</button>
+    </div>
 
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&q=80&w=800');"></div>
-          <div class="service-body">
-            <h3>Lavage de Vitres</h3>
-            <p>Nettoyage intérieur et extérieur résidentiel et commercial pour une clarté maximale.</p>
+    <div class="service-page-content">
+      <div class="service-intro reveal">
+        <p>Glissez le curseur pour observer la restauration complète des parois extérieures de vos gouttières.</p>
+      </div>
+
+      <div class="sliders-grid">
+        <!-- SLIDER 1 -->
+        <div class="ba-card glass-card reveal delay-1">
+          <h3>Exemple 1 : Restauration de la face avant</h3>
+          <div class="ba-slider-container">
+            <div class="ba-image-after" style="background-image: url('https://lh3.googleusercontent.com/d/1SXfBQgdmxp5GozQXX4eQSHxpCb_hSIXi');"></div>
+            <div class="ba-image-before" id="ba-before-goutt-1" style="width: 50%;">
+              <div class="ba-image-before-inner" style="background-image: url('https://lh3.googleusercontent.com/d/1Obvuc4LsuBP5Mn0QwOT0JPpPpVD_edxP');"></div>
+            </div>
+            <span class="ba-label ba-label-before">Avant</span>
+            <span class="ba-label ba-label-after">Après</span>
+            <div class="ba-handle" id="ba-handle-goutt-1" style="left: 50%;">↔</div>
+            <input type="range" min="0" max="100" value="50" class="ba-range-input" oninput="updateSlider('goutt-1', this.value)">
           </div>
         </div>
 
-        <div class="service-card">
-          <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=800');"></div>
-          <div class="service-body">
-            <h3>Nettoyage de Gouttières</h3>
-            <p>Dégagement complet des débris pour prévenir les infiltrations d'eau et protéger votre toit.</p>
-          </div>
-        </div>
-
-        <div class="service-card">
-          <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800');"></div>
-          <div class="service-body">
-            <h3>Blanchiment de Gouttières</h3>
-            <p>Restauration de l'apparence d'origine de vos gouttières extérieures pour rehausser votre façade.</p>
+        <!-- SLIDER 2 -->
+        <div class="ba-card glass-card reveal delay-2">
+          <h3>Exemple 2 : Blanchiment et nettoyage complet</h3>
+          <div class="ba-slider-container">
+            <div class="ba-image-after" style="background-image: url('https://drive.google.com/thumbnail?id=1lAy1HcfjeQiEb9CTraw1zDmtuV1b4EAH&sz=w1200');"></div>
+            <div class="ba-image-before" id="ba-before-goutt-3" style="width: 50%;">
+              <div class="ba-image-before-inner" style="background-image: url('https://drive.google.com/thumbnail?id=12GnNHn5gKLCsB2Mkaub5PBTvAznSehBT&sz=w1200');"></div>
+            </div>
+            <span class="ba-label ba-label-before">Avant</span>
+            <span class="ba-label ba-label-after">Après</span>
+            <div class="ba-handle" id="ba-handle-goutt-3" style="left: 50%;">↔</div>
+            <input type="range" min="0" max="100" value="50" class="ba-range-input" oninput="updateSlider('goutt-3', this.value)">
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- FORMULAIRE DE SOUMISSION GRATUITE AVEC LA CLE WE3FORMS INTEGREE -->
-  <section class="quote-section" id="soumission">
+      <h3 class="reveal" style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Ce que comprend le service de base :</h3>
+      <ul class="service-features-list reveal">
+        <li class="glass-card">Frottage manuel minutieux des parois extérieures</li>
+        <li class="glass-card delay-1">Élimination complète des marques et saletés</li>
+        <li class="glass-card delay-2">Restauration esthétique immédiate de votre façade</li>
+      </ul>
+
+      <h3 class="reveal" style="font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 20px; margin-top: 30px;">Service complémentaire :</h3>
+      <ul class="service-features-list reveal">
+        <li class="glass-card delay-3">Nettoyage des soffites (élimination des toiles d'araignées)</li>
+      </ul>
+
+      <div class="extra-info-block glass-card reveal">
+        <h4>Pourquoi blanchir vos gouttières ?</h4>
+        <p>Les gouttières accumulent souvent de l'eau stagnante mélangée aux résidus de votre toit, ce qui crée des lignes noires d'oxydation très tenaces (souvent appelées « rayures de tigre »). Un simple lavage à la pression ne suffit pas à les enlever. Notre méthode spécialisée dissout l'oxydation en profondeur sans altérer la peinture ou le fini de vos gouttières.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= PAGE DÉDIÉE : RÉPARATION DE MOUSTIQUAIRES ================= -->
+  <div id="page-reparation-moustiquaires" class="page">
+    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.75), rgba(10,37,64,0.75)), url('https://drive.google.com/thumbnail?id=1zq08EH40-mSGxcd0MW4PX3Mu812TLQXa&sz=w1200') center/cover no-repeat;">
+      <h1>Réparation de Moustiquaires</h1>
+      <p>Remise en état complète et remplacement de vos toiles abîmées ou trouées.</p>
+      <button onclick="scrollToForm()" class="btn btn-primary">Obtenir une soumission gratuite</button>
+    </div>
+
+    <div class="service-page-content">
+      <div class="service-intro reveal">
+        <p>Glissez le curseur pour voir la réfection complète de la toile du moustiquaire.</p>
+      </div>
+
+      <div class="sliders-grid">
+        <!-- SLIDER 1 -->
+        <div class="ba-card glass-card reveal delay-1">
+          <h3>Exemple 1 : Remplacement de toile</h3>
+          <div class="ba-slider-container">
+            <div class="ba-image-after" style="background-image: url('https://drive.google.com/thumbnail?id=1R1eWTQnnJQG9ZfKJAz8r2cetwFx4E1Ys&sz=w1200');"></div>
+            <div class="ba-image-before" id="ba-before-moust-1" style="width: 50%;">
+              <div class="ba-image-before-inner" style="background-image: url('https://drive.google.com/thumbnail?id=1LR4lQcKRvCmfja2mQJ8QXz8-IgWymsP2&sz=w1200');"></div>
+            </div>
+            <span class="ba-label ba-label-before">Avant</span>
+            <span class="ba-label ba-label-after">Après</span>
+            <div class="ba-handle" id="ba-handle-moust-1" style="left: 50%;">↔</div>
+            <input type="range" min="0" max="100" value="50" class="ba-range-input" oninput="updateSlider('moust-1', this.value)">
+          </div>
+        </div>
+
+        <!-- SLIDER 2 -->
+        <div class="ba-card glass-card reveal delay-2">
+          <h3>Exemple 2 : Remplacement de toile</h3>
+          <div class="ba-slider-container">
+            <div class="ba-image-after" style="background-image: url('https://drive.google.com/thumbnail?id=1k0NfYeQfV3SdHwf7dceFfHAgFayXS7BJ&sz=w1200');"></div>
+            <div class="ba-image-before" id="ba-before-moust-2" style="width: 50%;">
+              <div class="ba-image-before-inner" style="background-image: url('https://drive.google.com/thumbnail?id=1Kso-it3owA9LCJoVUySp3It--hMckpen&sz=w1200');"></div>
+            </div>
+            <span class="ba-label ba-label-before">Avant</span>
+            <span class="ba-label ba-label-after">Après</span>
+            <div class="ba-handle" id="ba-handle-moust-2" style="left: 50%;">↔</div>
+            <input type="range" min="0" max="100" value="50" class="ba-range-input" oninput="updateSlider('moust-2', this.value)">
+          </div>
+        </div>
+      </div>
+
+      <h3 class="reveal" style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Ce que comprend le service :</h3>
+      <ul class="service-features-list reveal">
+        <li class="glass-card delay-1">Remplacement par une toile en fibre de verre haute durabilité</li>
+        <li class="glass-card delay-2">Installation d'un nouveau cordon de retenue (cannelure)</li>
+      </ul>
+
+      <div class="extra-info-block glass-card reveal">
+        <h4>Profitez de l'été sans insectes</h4>
+        <p>Un moustiquaire déchiré ou déformé laisse passer les insectes et gâche l'esthétique de vos fenêtres. Plutôt que de remplacer l'ensemble du cadrage, notre service de réparation remplace la toile à neuf rapidement pour une fraction du prix d'un cadre neuf.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= PAGE DÉDIÉE : COMMERCIAL ================= -->
+  <div id="page-commercial" class="page">
+    <div class="service-page-header" style="background: linear-gradient(rgba(10,37,64,0.85), rgba(10,37,64,0.85)), url('https://drive.google.com/thumbnail?id=1Y5SFaJjJymriQUnQgvRd6zang8hlqObW&sz=w1200') center/cover no-repeat;">
+      <h1>Lavage de Vitres Commercial & Multi-Logements</h1>
+      <p>Des solutions professionnelles pour une image de marque étincelante à Montréal.</p>
+      <button onclick="scrollToForm()" class="btn btn-primary">Demander un devis commercial</button>
+    </div>
+
+    <div class="service-page-content">
+      
+      <div class="service-intro reveal" style="text-align: center; margin-bottom: 60px;">
+        <h2 style="font-size: 38px; font-weight: 800; color: var(--primary); letter-spacing: -1px;">Un partenariat fiable pour vos bâtiments</h2>
+        <p style="font-size: 20px; color: var(--text-muted); max-width: 800px; margin: 0 auto;">Nous offrons aux commerçants et gestionnaires immobiliers un service rigoureux, ponctuel et adapté à vos exigences.</p>
+      </div>
+
+      <!-- 3 CARTES ALIGNÉES -->
+      <div class="advantages-grid reveal" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; margin-top: 0;">
+        <div class="adv-card glass-card delay-1" style="text-align: center; padding: 40px 30px;">
+          <div class="adv-icon" style="font-size: 36px; width: 70px; height: 70px; line-height: 70px; margin-bottom: 24px;">🏢</div>
+          <h3 style="font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 16px;">Commerces & Vitrines</h3>
+          <p style="font-size: 16px; color: var(--text-muted);">Gardez vos vitrines toujours propres pour accueillir vos clients avec une image irréprochable.</p>
+        </div>
+
+        <div class="adv-card glass-card delay-2" style="text-align: center; padding: 40px 30px;">
+          <div class="adv-icon" style="font-size: 36px; width: 70px; height: 70px; line-height: 70px; margin-bottom: 24px;">🏬</div>
+          <h3 style="font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 16px;">Immeubles & Condos</h3>
+          <p style="font-size: 16px; color: var(--text-muted);">Lavage périodique des parties communes, entrées et fenêtres d'immeubles résidentiels ou de bureaux.</p>
+        </div>
+
+        <div class="adv-card glass-card delay-3" style="text-align: center; padding: 40px 30px;">
+          <div class="adv-icon" style="font-size: 36px; width: 70px; height: 70px; line-height: 70px; margin-bottom: 24px;">📋</div>
+          <h3 style="font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 16px;">Facturation & Contrats</h3>
+          <p style="font-size: 16px; color: var(--text-muted);">Possibilité de contrats d'entretien réguliers (mensuel, trimestriel) avec facturation simple et flexible.</p>
+        </div>
+      </div>
+
+      <!-- BLOC PLEINE LARGEUR -->
+      <div class="adv-card glass-card reveal" style="text-align: center; margin-bottom: 80px; padding: 50px;">
+        <h3 style="font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Une image professionnelle impeccable</h3>
+        <p style="font-size: 18px; color: var(--text-muted); line-height: 1.8; max-width: 900px; margin: 0 auto;">La propreté de vos vitrines est le premier élément que remarquent vos clients. CH Vitres propose des interventions rapides en dehors de vos heures de pointe afin de ne pas perturber vos activités commerciales.</p>
+      </div>
+
+      <h3 class="reveal" style="font-size: 32px; font-weight: 800; color: var(--primary); text-align: center; margin-bottom: 40px; letter-spacing: -0.5px;">Nos Solutions & Recommandations</h3>
+      
+      <div class="commercial-split-layout reveal">
+        <!-- Eau Pure -->
+        <div class="commercial-side-card glass-card delay-1">
+          <div style="overflow: hidden;">
+            <img src="https://drive.google.com/thumbnail?id=1MjY3U5wgqTjKTt0uAmoPeCyGz0WktybA&sz=w1200" alt="Système eau pure haute performance" style="transition: transform 0.8s var(--ease-liquid);">
+          </div>
+          <div style="padding: 32px; flex-grow: 1;">
+            <h4 style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 16px;">Lavage Extérieur Haute Performance</h4>
+            <p style="margin-bottom: 20px; font-size: 16px; color: var(--text-muted);">Nous utilisons un système de perches alimentées à l'eau pure (déminéralisée).</p>
+            <ul style="margin-left: 24px; margin-bottom: 15px; color: var(--text-muted); font-size: 16px; font-weight: 500; line-height: 1.8;">
+              <li>Séchage parfait sans la moindre trace.</li>
+              <li>Aucun résidu chimique polluant.</li>
+              <li>Accès sécuritaire jusqu'à <strong>3 étages</strong> sans nacelle.</li>
+              <li>Solution écologique qui préserve vos cadres en aluminium.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Fréquence -->
+        <div class="commercial-side-card glass-card delay-2">
+          <div style="overflow: hidden;">
+            <img src="https://drive.google.com/thumbnail?id=1K_aXtO3Si6bV0SChSQM_0i_1gt2_dh6n&sz=w1200" alt="Recommandation d'entretien" style="transition: transform 0.8s var(--ease-liquid);">
+          </div>
+          <div style="padding: 32px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+            <h4 style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 20px;">Recommandation d'entretien</h4>
+            <div style="background: rgba(37, 99, 235, 0.05); border-left: 5px solid var(--accent); padding: 24px; border-radius: 0 12px 12px 0;">
+              <p style="color: var(--text-dark); font-size: 16px; margin-bottom: 16px; line-height: 1.7; font-weight: 600;">Afin de préserver une image professionnelle optimale, nous recommandons un nettoyage de vos commerces et bureaux tous les <span style="color: var(--accent); font-size: 18px;">2 à 3 mois</span>.</p>
+              <p style="color: var(--text-muted); font-size: 15px; line-height: 1.7;">Toutefois, les bâtiments fortement exposés à la pollution (zones industrielles ou grands axes routiers) nécessiteront des interventions plus rapprochées pour contrer l'accumulation rapide de poussière.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GALERIE COMMERCIALE -->
+      <h3 class="reveal" style="font-size: 32px; font-weight: 800; color: var(--primary); text-align: center; margin-bottom: 40px; margin-top: 80px; letter-spacing: -0.5px;">Aperçu de nos réalisations commerciales</h3>
+      
+      <div class="photo-gallery-grid reveal">
+          <div class="gallery-item glass-card delay-1">
+            <img src="https://drive.google.com/thumbnail?id=1TK0i2FEH5Nfy9afozU_3vWM16WOkxD7m&sz=w1200" alt="Condos et Multi-logements">
+            <div class="gallery-caption">Condos & Multi-logements</div>
+          </div>
+          <div class="gallery-item glass-card delay-2">
+            <img src="https://drive.google.com/thumbnail?id=1ZS9jZqHLZbi2pke709vDBSQit-ZMdd9q&sz=w1200" alt="Imprimerie">
+            <div class="gallery-caption">Imprimerie</div>
+          </div>
+          <div class="gallery-item glass-card delay-3">
+            <img src="https://www.winlight.fr/wp-content/uploads/2025/10/ecran_vitrine_avec_beaucoup_de_reflets.webp" alt="Vitrines de commerces">
+            <div class="gallery-caption">Vitrines de commerces : Fini cristallin maximisant la lumière</div>
+          </div>
+      </div>
+
+    </div>
+  </div>
+  
+  <!-- ================= PAGE DÉDIÉE : GALERIE ================= -->
+  <div id="page-galerie" class="page">
+    <div class="service-page-header" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); padding: 140px 24px 80px;">
+      <h1>Notre Galerie de Réalisations</h1>
+      <p>Découvrez la qualité de notre travail à travers ces photos de nos interventions sur le terrain.</p>
+    </div>
+    
+    <div class="service-page-content" style="padding-top: 50px;">
+      
+      <h2 class="gallery-category-title reveal" style="text-align: center; width: 100%;">Toutes nos réalisations</h2>
+      <div class="photo-gallery-grid reveal" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+        
+        <div class="gallery-item glass-card delay-1">
+          <img src="https://drive.google.com/thumbnail?id=1deEt7t0hU3dn_bFBrX9maPzphzXoijQy&sz=w1200" alt="Réalisation CH Vitres 1">
+          <div class="gallery-caption">Résultat professionnel et sans trace</div>
+        </div>
+        
+        <div class="gallery-item glass-card delay-2">
+          <img src="https://drive.google.com/thumbnail?id=13_bYD9NdD52XmMFalit5aFpfP94B2igM&sz=w1200" alt="Réalisation CH Vitres 2">
+          <div class="gallery-caption">Entretien méticuleux de vos fenêtres</div>
+        </div>
+        
+        <div class="gallery-item glass-card delay-3">
+          <img src="https://drive.google.com/thumbnail?id=1dWwoq1vqPqjLDkGGCmFwmWHLAP0i9mCK&sz=w1200" alt="Réalisation CH Vitres 3">
+          <div class="gallery-caption">Clarté maximale pour votre propriété</div>
+        </div>
+        
+        <div class="gallery-item glass-card delay-1">
+          <img src="https://drive.google.com/thumbnail?id=1L8Q1QA2ODu8fRt8KUhzLgH6jYsFigZQ-&sz=w1200" alt="Réalisation CH Vitres 4">
+          <div class="gallery-caption">Lavage professionnel des surfaces vitrées</div>
+        </div>
+        
+        <div class="gallery-item glass-card delay-2">
+          <img src="https://drive.google.com/thumbnail?id=1iTy4AqrwDza0QGsSxFB62Mbl5lEu7mwc&sz=w1200" alt="Réalisation CH Vitres 5">
+          <div class="gallery-caption">Une luminosité optimale garantie</div>
+        </div>
+        
+        <div class="gallery-item glass-card delay-3">
+          <img src="https://drive.google.com/thumbnail?id=1W9wVuqKZa_VNXV9q4mAi6tFr2zNPHWl4&sz=w1200" alt="Réalisation CH Vitres 6">
+          <div class="gallery-caption">Intervention de qualité sur le terrain</div>
+        </div>
+        
+        <div class="gallery-item glass-card delay-1">
+          <img src="https://drive.google.com/thumbnail?id=1QjfNKd6N1DA9-zGzmJyRQtd_MtBuDO3L&sz=w1200" alt="Réalisation CH Vitres 7">
+          <div class="gallery-caption">Nettoyage impeccable des cadrages</div>
+        </div>
+        
+        <div class="gallery-item glass-card delay-2">
+          <img src="https://drive.google.com/thumbnail?id=1DS-reg-dswC8BmgxaTTKzFZBpPZFLBAQ&sz=w1200" alt="Réalisation CH Vitres 8">
+          <div class="gallery-caption">Transparence et propreté irréprochables</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL POUR GALERIE EN PLEIN ÉCRAN -->
+  <div id="image-modal" class="modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <!-- ================= FORMULAIRE DE SOUMISSION ================= -->
+  <section class="quote-section reveal" id="soumission">
     <div class="quote-container">
       <h2>Obtenir une soumission gratuite</h2>
       <p>Remplissez ce formulaire court et nous vous contacterons rapidement avec une estimation sans engagement.</p>
 
       <form action="https://api.web3forms.com/submit" method="POST">
-        <!-- CLE INTÉGRÉE AUTOMATIQUEMENT ICI -->
         <input type="hidden" name="access_key" value="23b01e85-1c9b-48d3-9b8b-6e9af040d1bc">
         <input type="hidden" name="subject" value="Nouvelle demande d'estimation - CH Vitres">
         <input type="hidden" name="from_name" value="CH Vitres Web Site">
@@ -878,17 +1393,28 @@
           <div class="form-group">
             <label for="service">Service désiré *</label>
             <select id="service" name="service" class="form-control" required>
-              <option value="Lavage de vitres">Lavage de vitres</option>
-              <option value="Nettoyage de gouttières">Nettoyage de gouttières</option>
+              <option value="Lavage de vitres Résidentiel">Lavage de vitres Résidentiel</option>
               <option value="Blanchiment de gouttières">Blanchiment de gouttières</option>
+              <option value="Réparation de moustiquaires">Réparation de moustiquaires</option>
+              <option value="Lavage de vitres Commercial">Lavage de vitres Commercial</option>
               <option value="Combinaison de services">Combinaison de services</option>
             </select>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="address">Ville / Adresse approximative *</label>
-          <input type="text" id="address" name="address" class="form-control" placeholder="Ex: Rosemont, Montréal" required>
+        <div class="form-row-3">
+          <div class="form-group">
+            <label for="address">Adresse civique & Rue *</label>
+            <input type="text" id="address" name="address" class="form-control" placeholder="Ex: 1234 Rue St-Denis" required>
+          </div>
+          <div class="form-group">
+            <label for="city">Ville *</label>
+            <input type="text" id="city" name="city" class="form-control" placeholder="Ex: Montréal" required>
+          </div>
+          <div class="form-group">
+            <label for="postal_code">Code Postal</label>
+            <input type="text" id="postal_code" name="postal_code" class="form-control" placeholder="Ex: H2X 3K8">
+          </div>
         </div>
 
         <div class="form-group">
@@ -902,8 +1428,8 @@
   </section>
 
   <!-- INFOS CONTACT ET ZONES -->
-  <section class="info-section">
-    <div class="info-box">
+  <section class="info-section reveal">
+    <div class="info-box delay-1 glass-card" style="padding: 40px; background: rgba(255,255,255,0.8);">
       <h3>Zones desservies</h3>
       <ul class="areas-list">
         <li>Ahuntsic-Cartierville</li>
@@ -914,9 +1440,9 @@
       </ul>
     </div>
 
-    <div class="info-box">
+    <div class="info-box delay-2 glass-card" style="padding: 40px; background: rgba(255,255,255,0.8);">
       <h3>Pour nous joindre</h3>
-      <p style="color: var(--text-muted); margin-bottom: 20px;">Des questions ? N'hésitez pas à nous appeler directement ou à nous envoyer un message.</p>
+      <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 16px;">Des questions ? N'hésitez pas à nous appeler directement ou à nous envoyer un message.</p>
       <div class="contact-details">
         <div class="contact-item">
           📞 <a href="tel:5148039925">(514) 803-9925</a>
@@ -930,9 +1456,135 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>&copy; 2026 CH Vitres. Tous droits réservés. | Le spécialiste de vos vitres.</p>
+    <p>© 2026 CH Vitres. Tous droits réservés. | Le spécialiste de vos vitres.</p>
     <p><a href="tel:5148039925">(514) 803-9925</a> • Montréal, Rive-Nord et Rive-Sud</p>
   </footer>
+
+  <!-- SCRIPT JAVASCRIPT -->
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const targetPage = document.getElementById('page-' + pageId);
+      if (targetPage) {
+        targetPage.classList.add('active');
+        
+        // Relancer l'observer pour la nouvelle page affichée
+        setTimeout(() => {
+          document.querySelectorAll('.reveal').forEach(el => {
+             if(isElementInViewport(el)){
+               el.classList.add('active');
+             }
+          });
+        }, 100);
+      }
+      
+      document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+      if (pageId === 'accueil') document.getElementById('nav-accueil')?.classList.add('active');
+      else if (pageId === 'commercial') document.getElementById('nav-commercial')?.classList.add('active');
+      else if (pageId === 'galerie') document.getElementById('nav-galerie')?.classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollToForm() {
+      const form = document.getElementById('soumission');
+      if (form) form.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // CAROUSEL
+    const track = document.getElementById('carouselTrack');
+    let index = 0;
+
+    function moveCarousel() {
+      if (!track) return;
+      const card = track.querySelector('.review-card');
+      if (!card) return;
+      const cardWidth = card.offsetWidth + 30; // updated gap
+      const totalCards = track.querySelectorAll('.review-card').length;
+      
+      let visibleCards = 3;
+      if (window.innerWidth <= 768) visibleCards = 1;
+
+      index++;
+      if (index > totalCards - visibleCards) {
+        index = 0;
+      }
+      track.style.transform = `translateX(-${index * cardWidth}px)`;
+    }
+
+    setInterval(moveCarousel, 4000); // Slower for premium feel
+
+    // SLIDERS AVANT/APRÈS
+    function updateSlider(id, val) {
+      const beforeImg = document.getElementById('ba-before-' + id);
+      const handle = document.getElementById('ba-handle-' + id);
+      if (beforeImg) beforeImg.style.width = val + '%';
+      if (handle) handle.style.left = val + '%';
+    }
+
+    // LOGIQUE MODAL GALERIE
+    function openModal(imgSrc) {
+      const modal = document.getElementById("image-modal");
+      const modalImg = document.getElementById("modal-img");
+      modal.style.display = "block";
+      setTimeout(() => { modal.classList.add("show"); }, 10); 
+      modalImg.src = imgSrc;
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("image-modal");
+      modal.classList.remove("show");
+      setTimeout(() => { modal.style.display = "none"; }, 400);
+    }
+
+    // LOGIQUE D'ANIMATION AU SCROLL (Intersection Observer)
+    function isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+            rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.95
+        );
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initialiser le Modal pour la galerie
+      const galleryImages = document.querySelectorAll('#page-galerie .gallery-item img');
+      galleryImages.forEach(img => {
+        img.addEventListener('click', function(e) {
+          e.stopPropagation();
+          openModal(this.src);
+        });
+      });
+
+      // 2. Initialiser le Scroll Reveal Cinematic
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.reveal').forEach(el => {
+        observer.observe(el);
+      });
+      
+      // Activer ceux qui sont déjà visibles au chargement
+      setTimeout(() => {
+          document.querySelectorAll('.reveal').forEach(el => {
+             if(isElementInViewport(el)){
+               el.classList.add('active');
+             }
+          });
+      }, 400);
+    });
+  </script>
 
 </body>
 </html>
